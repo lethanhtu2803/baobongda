@@ -9,6 +9,7 @@ import Blog from './pages/Blog/Blog';
 import About from './pages/About/About';
 import Category from './pages/Category/Category';
 import Latest from './pages/Latest/Latest';
+import Test from './pages/Test/Test';
 
 
 const Layout = () => {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: '/latest',
         element: <Latest></Latest>
+      },
+      {
+        path: '/test',
+        element: <Test></Test>
       },
     ]
   },

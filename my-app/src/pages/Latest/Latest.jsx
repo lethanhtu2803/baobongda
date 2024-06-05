@@ -1,6 +1,55 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { extractImageUrl } from '../../helper/RSSImage';
+const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 const Latest = () => {
+    const [rssItems, setRssItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const FetchDataFromRssFeed = async () => {
+    try {
+      const response = await fetch(
+        `${CORS_PROXY}https://bongda24h.vn/RSS/187.rss`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const text = await response.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, "text/xml");
+      console.log(xml);
+      const items = Array.from(xml.querySelectorAll("item"));
+      const parsedItems = items.map((item) => {
+        const titleCData = item.getElementsByTagName('title')[0]?.textContent
+        const descriptionCData = item.querySelector("description")?.textContent;
+        const url = extractImageUrl(descriptionCData);
+        console.log(descriptionCData);
+        // Lấy nội dung từ CDATA
+        const cdataTitle = titleCData.replace(/&quot;/g, '"');
+        const cdataContent = descriptionCData.replace(/<[^>]+>/g, '');
+      
+        return {
+          title: cdataTitle,
+          link: item.getElementsByTagName('link')[0]?.textContent,
+          description: cdataContent,
+          pubDate: item.getElementsByTagName('pubDate')[0]?.textContent,
+          mediaContent: url,
+          category: item.getElementsByTagName('category')[0]?.textContent,
+        };
+      });
+      setRssItems(parsedItems);
+      setLoading(false);
+      console.log(parsedItems);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    FetchDataFromRssFeed();
+  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
     return (
         <div>
             <main>
@@ -11,33 +60,19 @@ const Latest = () => {
                     <div class="col-lg-8">
                   
                         <div class="about-right mb-90">
+                        {rssItems.length > 0 && rssItems.map((item) => (
+                            <>
                             <div class="about-img">
-                                <img src="assets/img/trending/trending_top.jpg" alt=""/>
+                            {item.mediaContent && <img src={item.mediaContent} alt={item.title} />}
                             </div>
                             <div class="heading-news mb-30 pt-30">
-                                <h3>Here come the moms in space</h3>
+                                <h3>{item.title}</h3>
                             </div>
                             <div class="about-prea">
-                                <p class="about-pera1 mb-25">Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
-                                <p class="about-pera1 mb-25">Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
-                                <p class="about-pera1 mb-25">
-                                    My hero when I was a kid was my mom. Same for everyone I knew. Moms are untouchable. They’re elegant, smart, beautiful, kind…everything we want to be. At 29 years old, my favorite compliment is being told that I look like my mom. Seeing myself in her image, like this daughter up top, makes me so proud of how far I’ve come, and so thankful for where I come from.
-                                    the refractor telescope uses a convex lens to focus the light on the eyepiece.
-                                    The reflector telescope has a concave lens which means it telescope sits on. The mount is the actual tripod and the wedge is the device that lets you attach the telescope to the mount.
-                                    Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
+                                <p class="about-pera1 mb-25">{item.description}</p>
                             </div> 
-                            <div class="section-tittle mb-30 pt-30">
-                                <h3>Unordered list style?</h3>
-                            </div>
-                            <div class="about-prea">
-                                <p class="about-pera1 mb-25">Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
-                                <p class="about-pera1 mb-25">Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
-                                <p class="about-pera1 mb-25">
-                                    My hero when I was a kid was my mom. Same for everyone I knew. Moms are untouchable. They’re elegant, smart, beautiful, kind…everything we want to be. At 29 years old, my favorite compliment is being told that I look like my mom. Seeing myself in her image, like this daughter up top, makes me so proud of how far I’ve come, and so thankful for where I come from.
-                                    the refractor telescope uses a convex lens to focus the light on the eyepiece.
-                                    The reflector telescope has a concave lens which means it telescope sits on. The mount is the actual tripod and the wedge is the device that lets you attach the telescope to the mount.
-                                    Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
-                            </div>
+                            </>
+                            ))}
                             <div class="social-share pt-30">
                                 <div class="section-tittle">
                                     <h3 class="mr-20">Share:</h3>
