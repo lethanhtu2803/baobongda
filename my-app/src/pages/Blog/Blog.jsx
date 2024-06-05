@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { extractImageUrl } from "../../helper/RSSImage";
 
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 const Blog = () => {
-  const [feedItems, setFeedItems] = useState([]);
 
   const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +11,7 @@ const Blog = () => {
   const FetchDataFromRssFeed = async () => {
     try {
       const response = await fetch(
-        `${CORS_PROXY}https://www.bongda.com.vn/premier-league.rss`
+        `${CORS_PROXY}https://bongda24h.vn/RSS/1.rss`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -19,16 +19,29 @@ const Blog = () => {
       const text = await response.text();
       const parser = new DOMParser();
       const xml = parser.parseFromString(text, "text/xml");
+      console.log(xml);
       const items = Array.from(xml.querySelectorAll("item"));
-      const parsedItems = items.map((item) => ({
-        title: item.querySelector("title")?.textContent ,
-        link: item.querySelector("link")?.textContent,
-        description: item.querySelector("description")?.textContent,
-        pubDate: item.querySelector("pubDate")?.textContent,
-        image: item.querySelector("image")?.textContent,
-      })).filter((item) => item.title?.toLowerCase().includes('chelsea'));
+      const parsedItems = items.map((item) => {
+        const titleCData = item.getElementsByTagName('title')[0]?.textContent
+        const descriptionCData = item.querySelector("description")?.textContent;
+        const url = extractImageUrl(descriptionCData);
+        console.log(descriptionCData);
+        // Lấy nội dung từ CDATA
+        const cdataTitle = titleCData.replace(/&quot;/g, '"');
+        const cdataContent = descriptionCData.replace(/<[^>]+>/g, '');
+      
+        return {
+          title: cdataTitle,
+          link: item.getElementsByTagName('link')[0]?.textContent,
+          description: cdataContent,
+          pubDate: item.getElementsByTagName('pubDate')[0]?.textContent,
+          mediaContent: url,
+          category: item.getElementsByTagName('category')[0]?.textContent,
+        };
+      });
       setRssItems(parsedItems);
       setLoading(false);
+      console.log(parsedItems);
     } catch (error) {
       setError(error);
       setLoading(false);
@@ -51,7 +64,7 @@ const Blog = () => {
                     <div className="blog_item_img">
                       <img
                         className="card-img rounded-0"
-                        src={item.image}
+                        src={item.mediaContent}
                         alt=""
                       />
                       <a href="#" className="blog_item_date">
