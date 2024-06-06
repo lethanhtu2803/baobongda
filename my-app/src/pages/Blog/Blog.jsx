@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { extractImageUrl } from "../../helper/RSSImage";
+import { Link } from "react-router-dom";
 
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 const Blog = () => {
-
   const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,21 +22,21 @@ const Blog = () => {
       console.log(xml);
       const items = Array.from(xml.querySelectorAll("item"));
       const parsedItems = items.map((item) => {
-        const titleCData = item.getElementsByTagName('title')[0]?.textContent
+        const titleCData = item.getElementsByTagName("title")[0]?.textContent;
         const descriptionCData = item.querySelector("description")?.textContent;
         const url = extractImageUrl(descriptionCData);
         console.log(descriptionCData);
         // Lấy nội dung từ CDATA
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
-        const cdataContent = descriptionCData.replace(/<[^>]+>/g, '');
-      
+        const cdataContent = descriptionCData.replace(/<[^>]+>/g, "");
+
         return {
           title: cdataTitle,
-          link: item.getElementsByTagName('link')[0]?.textContent,
+          link: item.getElementsByTagName("link")[0]?.textContent,
           description: cdataContent,
-          pubDate: item.getElementsByTagName('pubDate')[0]?.textContent,
+          pubDate: item.getElementsByTagName("pubDate")[0]?.textContent,
           mediaContent: url,
-          category: item.getElementsByTagName('category')[0]?.textContent,
+          category: item.getElementsByTagName("category")[0]?.textContent,
         };
       });
       setRssItems(parsedItems);
@@ -97,7 +97,7 @@ const Blog = () => {
                     </div>
                   </article>
                 ))}
-           
+
                 <nav class="blog-pagination justify-content-center d-flex">
                   <ul class="pagination">
                     <li class="page-item">
@@ -154,43 +154,42 @@ const Blog = () => {
                 </aside>
 
                 <aside class="single_sidebar_widget post_category_widget">
-                  <h4 class="widget_title">Category</h4>
+                  <h4 class="widget_title">Danh mục</h4>
                   <ul class="list cat-list">
                     <li>
-                      <a href="#" class="d-flex">
-                        <p>Resaurant food</p>
-                        <p>(37)</p>
-                      </a>
+                      <Link to="/football-vn" class="d-flex">
+                        <p>Bóng đá Việt Nam</p>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#" class="d-flex">
-                        <p>Travel news</p>
-                        <p>(10)</p>
-                      </a>
+                      <Link to="/football-euro" class="d-flex">
+                        <p>Bóng đá Châu Âu</p>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#" class="d-flex">
-                        <p>Modern technology</p>
-                        <p>(03)</p>
-                      </a>
+                      <Link to="/football-en" class="d-flex">
+                        <p>Bóng đá Anh</p>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#" class="d-flex">
-                        <p>Product</p>
-                        <p>(11)</p>
-                      </a>
+                      <Link to="/football-italia" class="d-flex">
+                        <p>Bóng đá Ý</p>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#" class="d-flex">
-                        <p>Inspiration</p>
-                        <p>21</p>
-                      </a>
+                      <Link to="/football-france" class="d-flex">
+                        <p>Bóng đá Pháp</p>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#" class="d-flex">
-                        <p>Health Care (21)</p>
-                        <p>09</p>
-                      </a>
+                      <Link to="/football-spanish" class="d-flex">
+                        <p>Bóng đá Tây Ban Nha</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-germany" class="d-flex">
+                        <p>Bóng đá Đức</p>
+                      </Link>
                     </li>
                   </ul>
                 </aside>

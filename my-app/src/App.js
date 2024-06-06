@@ -10,6 +10,13 @@ import About from './pages/About/About';
 import Category from './pages/Category/Category';
 import Latest from './pages/Latest/Latest';
 import Test from './pages/Test/Test';
+import FootballENG from './pages/Category/FootballENG';
+import FootballVN from './pages/Category/FootballVN';
+import FootballEURO from './pages/Category/FootballEURO';
+import FootballFRANCE from './pages/Category/FootballFRANCE';
+import FootballSPAIN from './pages/Category/FootballSPAIN';
+import FootballGER from './pages/Category/FootballGER';
+import FootballITALIA from './pages/Category/FootballITALIA';
 
 
 const Layout = () => {
@@ -48,7 +55,34 @@ const router = createBrowserRouter([
         path: '/category',
         element: <Category></Category>
       },
-      
+      {
+        path: '/football-en',
+        element: <FootballENG></FootballENG>
+      },
+      {
+        path: '/football-vn',
+        element: <FootballVN></FootballVN>
+      },
+      {
+        path: '/football-euro',
+        element: <FootballEURO></FootballEURO>
+      },
+      {
+        path: '/football-france',
+        element: <FootballFRANCE></FootballFRANCE>
+      },
+      {
+        path: '/football-spanish',
+        element: <FootballSPAIN></FootballSPAIN>
+      },
+      {
+        path: '/football-germany',
+        element: <FootballGER></FootballGER>
+      },
+      {
+        path: '/football-italia',
+        element: <FootballITALIA></FootballITALIA>
+      },
       {
         path: '/latest',
         element: <Latest></Latest>
