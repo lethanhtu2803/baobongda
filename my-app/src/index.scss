@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  body {
+    @apply m-0 font-sans antialiased subpixel-antialiased;
+  }
+
+  code {
+    @apply font-mono;
+  }
+}
+
+@layer components {
+  .container {
+    max-width: 1180px;
+    @apply mx-auto;
+  }
+}
