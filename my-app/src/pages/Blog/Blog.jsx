@@ -60,11 +60,13 @@ const Blog = () => {
   };
 
   const currentItems = rssItems.slice(itemOffset, itemOffset + itemsPerPage);
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   return (
     <div>
       <section class="blog_area section-padding">
         <div class="container">
           <div class="row">
+          {/* <h1>Hello  {currentUser?.username || "Xin mời đăng nhập"}</h1> */}
             <div class="col-lg-8 mb-5 mb-lg-0">
               <div class="blog_left_sidebar">
                 {currentItems.map((item, index) => (
