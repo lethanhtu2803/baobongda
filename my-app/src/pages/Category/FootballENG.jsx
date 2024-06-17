@@ -57,14 +57,14 @@ const FootballENG = () => {
         <div>
             <main>
 
-    <div class="about-area2 gray-bg pt-60 pb-60">
+    <div class="about-area2 gray-bg pt-20 pb-60">
         <div class="container">
                 <div class="row">
                 <div class="col-lg-8">
                     <div class="whats-news-wrapper">
            
                             <div class="row justify-content-between align-items-end mb-15">
-                                <div class="col-xl-4">
+                                <div class="col-xl-6">
                                     <div class="section-tittle mb-30">
                                         <h3>Bóng đá Anh</h3>
                                     </div>
