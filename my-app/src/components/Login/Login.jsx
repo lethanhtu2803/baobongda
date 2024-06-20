@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({onLogin}) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,7 +12,6 @@ const Login = ({onLogin}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    onLogin();
     // Handle login logic here
     try {
       const response = await fetch("http://localhost:8087/api/account/login", {
@@ -31,7 +30,7 @@ const Login = ({onLogin}) => {
           JSON.stringify({ username: account.username, status: data.status})
         );
         navigate("/blog");
-        alert("cc");
+        window.location.reload();
         console.log("login thành công");
       } else {
         console.error("Error submitting form:", data.status);
@@ -42,7 +41,7 @@ const Login = ({onLogin}) => {
   };
   return (
     <div className="max-w-md mx-auto mt-10 pb-10">
-      <h2 className="text-2xl font-bold mb-5 text-center">Login</h2>
+      <h2 className="text-2xl font-bold mb-5 text-center">Đăng nhập</h2>
       <form
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded-lg shadow-lg"
@@ -52,7 +51,7 @@ const Login = ({onLogin}) => {
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="username"
           >
-            Username
+            Tên tài khoản
           </label>
           <input
             type="text"
@@ -67,7 +66,7 @@ const Login = ({onLogin}) => {
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="password"
           >
-            Password
+            Mật khẩu
           </label>
           <input
             type="password"
@@ -81,7 +80,7 @@ const Login = ({onLogin}) => {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300"
         >
-          Login
+          Đăng nhập
         </button>
       </form>
     </div>

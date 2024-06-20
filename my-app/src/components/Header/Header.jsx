@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const[user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     console.log(currentUser);
-    if(currentUser) setUser(currentUser);
-  },[user])
+    if (currentUser) setUser(currentUser);
+  }, []);
   console.log(user);
   return (
     <div>
@@ -132,13 +136,81 @@ const Header = () => {
                         </li>
                       </ul>
 
-                      <div className="nav-search search-switch">
+                      {/* <div
+                        className="nav-search search-switch"
+                        style={{ padding: "30x 15px" }}
+                      >
                         <i className="fa fa-search"></i>
                         {user ? (
-  <Link to="/"><i className="fa-solid fa-user-secret"></i></Link>
-) : (
-  <Link to="/login"><i className="fa-solid fa-user"></i></Link>
-)}
+                          <Link to="/">
+                            <i className="fa-solid fa-user-secret"></i>
+                          </Link>
+                        ) : (
+                          <Link to="/login">
+                            <i className="fa-solid fa-user"></i>
+                          </Link>
+                        )}
+                       
+                      </div> */}
+                      {/* Button toggle dropdown */}
+                      <div className="relative inline-block text-left" style={{top: "11px"}}>
+                        <div className="overflow-hidden">
+                          <button
+                            type="button"
+                            className="flex items-center px-3 py-2 text-gray-700 hover:text-gray-900 focus:outline-none focus:text-gray-900"
+                            onClick={toggleDropdown}
+                          >
+                            <i className="fa-solid fa-user text-white"></i>
+                          </button>
+                        </div>
+                        {isOpen && (
+                          <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
+                            <div className="py-1">
+                              <Link
+                                to="/register"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                              >
+                                Đăng ký
+                              </Link>
+                              <Link
+                                to="/login"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                              >
+                                Đăng nhập
+                              </Link>
+                              {user ? (
+                                <Link
+                                to="/profile"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                              >
+                                Xem thông tin tài khoản
+                              </Link>
+                                ) : (
+                                  <></>
+                              )}
+                              {user ? (
+                                <Link
+                                to="/"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                onClick={() => {
+                                  window.location.reload();
+                                  localStorage.clear();
+                                }}
+                              >
+                                Đăng xuất
+                              </Link>
+                                ) : (
+                                  <></>
+                              )}
+                              {/* <Link
+                                to="/profile"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                              >
+                                Xem thông tin tài khoản
+                              </Link> */}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -19,21 +19,9 @@ import FootballGER from './pages/Category/FootballGER';
 import FootballITALIA from './pages/Category/FootballITALIA';
 import TestAPI from './pages/Test/TestAPI';
 import Login from './components/Login/Login';
-import ProtectedRoute from './ProtectedRoute';
-import { useState } from 'react';
+import Register from './components/Login/Register';
+import Profile from './components/Login/Profile';
 
-function App(){
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  }
-  return (
-    <div>
-       <RouterProvider router={router}/>
-    </div>
-  );
-}
 const Layout = () => {
   return (
     <div className='app'>
@@ -55,7 +43,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/blog',
-        element: <ProtectedRoute element={<Blog />} isAuthenticated={isAuthenticated} />
+        element: <Blog />
       },
       {
         path: '/blog-details',
@@ -108,11 +96,25 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element: <Login onLogin={handleLogin}></Login>
+        element: <Login></Login>
+      },
+      {
+        path: '/register',
+        element: <Register></Register>
+      },
+      {
+        path: '/profile',
+        element: <Profile></Profile>
       },
     ]
   },
 
 ])
-
+function App(){
+  return (
+    <div>
+       <RouterProvider router={router}/>
+    </div>
+  );
+}
 export default App;
