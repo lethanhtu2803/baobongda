@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class AccountDTO {
 	private Integer id;
+	private String fullName;
 	private String username;
 	private String password;
 	private String email;
@@ -45,5 +46,12 @@ public class AccountDTO {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
 	
 }

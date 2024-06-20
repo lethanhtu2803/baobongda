@@ -15,6 +15,7 @@ import jakarta.persistence.*;
 public class Account implements java.io.Serializable {
 
 	private Integer id;
+	private String fullName;
 	private String username;
 	private String password;
 	private String email;
@@ -64,6 +65,16 @@ public class Account implements java.io.Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	
+	@Column(name = "fullName", nullable = false, length = 250)
+	public String getFullName() {
+		return this.fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	@Column(name = "password", nullable = false, length = 250)
