@@ -77,6 +77,7 @@ const Home = () => {
                                                                     {item.title}
                                                                 </Link>
                                                             </h2>
+                                                            
                                                             <p
                                                                 data-animation="fadeInUp"
                                                                 data-delay=".6s"
