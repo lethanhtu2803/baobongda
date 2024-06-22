@@ -29,6 +29,13 @@ const Test = () => {
         // Lấy nội dung từ CDATA
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
         const cdataContent = descriptionCData.replace(/<[^>]+>/g, '');
+
+        const atomNamespace = "http://www.w3.org/2005/Atom";
+
+        // Trong hàm map items của bạn
+        const atomLink = item.getElementsByTagNameNS(atomNamespace, "link")[0];
+        const atomLinkHref = atomLink ? atomLink.getAttribute('href') : null;
+
       
         return {
           title: cdataTitle,
@@ -37,6 +44,7 @@ const Test = () => {
           pubDate: item.getElementsByTagName('pubDate')[0]?.textContent,
           mediaContent: url,
           category: item.getElementsByTagName('category')[0]?.textContent,
+          atomLink: atomLinkHref 
         };
       });
       setRssItems(parsedItems);
