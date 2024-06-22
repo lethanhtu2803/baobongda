@@ -21,6 +21,8 @@ import TestAPI from './pages/Test/TestAPI';
 import Login from './components/Login/Login';
 import Register from './components/Login/Register';
 import Profile from './components/Login/Profile';
+import TestPage from './pages/Test/TestPage';
+import Test2 from './pages/Test/Test2';
 
 const Layout = () => {
   return (
@@ -91,8 +93,12 @@ const router = createBrowserRouter([
         element: <Latest></Latest>
       },
       {
-        path: '/test',
-        element: <TestAPI></TestAPI>
+        path: '/test/:articleId',
+        element: <TestPage></TestPage>
+      },
+      {
+        path: '/test2',
+        element: <Test></Test>
       },
       {
         path: '/login',

@@ -33,6 +33,12 @@ export const useRssFeed = (type) => {
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
         const cdataContent = descriptionCData.replace(/<[^>]+>/g, "");
 
+        const atomNamespace = "http://www.w3.org/2005/Atom";
+
+        // Trong hàm map items của bạn
+        const atomLink = item.getElementsByTagNameNS(atomNamespace, "link")[0];
+        const atomLinkHref = atomLink ? atomLink.getAttribute('href') : null;
+
         return {
           title: cdataTitle,
           link: item.getElementsByTagName("link")[0]?.textContent,
@@ -40,6 +46,7 @@ export const useRssFeed = (type) => {
           pubDate: timeSincePost,
           mediaContent: url,
           category: item.getElementsByTagName("category")[0]?.textContent,
+          atomLink: atomLinkHref 
         };
       });
       setRssItems(parsedItems);

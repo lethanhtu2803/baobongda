@@ -2,6 +2,7 @@ import React from "react";
 import { useRssFeed } from "../../helper/rssFetcher";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const { rssItems, loading, error } = useRssFeed(1);
@@ -67,15 +68,16 @@ const Home = () => {
                                                                 )}
                                                             </span>
                                                             <h2>
-                                                                <a
-                                                                    href="latest_news.html"
+                                                                <Link
+                                                                   to={`/test/${encodeURIComponent(item.link)}`}
                                                                     data-animation="fadeInUp"
                                                                     data-delay=".4s"
                                                                     data-duration="1000ms"
                                                                 >
                                                                     {item.title}
-                                                                </a>
+                                                                </Link>
                                                             </h2>
+                                                            
                                                             <p
                                                                 data-animation="fadeInUp"
                                                                 data-delay=".6s"
