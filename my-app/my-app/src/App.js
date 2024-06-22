@@ -23,6 +23,7 @@ import Register from './components/Login/Register';
 import Profile from './components/Login/Profile';
 import TestPage from './pages/Test/TestPage';
 import Test2 from './pages/Test/Test2';
+import NewsDetails from './pages/Details/NewsDetails';
 
 const Layout = () => {
   return (
@@ -93,8 +94,8 @@ const router = createBrowserRouter([
         element: <Latest></Latest>
       },
       {
-        path: '/test/:articleId',
-        element: <TestPage></TestPage>
+        path: '/news-details/:articleId',
+        element: <NewsDetails></NewsDetails>
       },
       {
         path: '/test2',

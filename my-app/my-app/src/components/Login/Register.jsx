@@ -22,7 +22,6 @@ const Register = () => {
     status: 1,
     created: new Date(),
   };
-  console.log(account);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

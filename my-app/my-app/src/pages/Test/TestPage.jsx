@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams,  } from 'react-router-dom';
 
 const TestPage = () => {
-    const location = useLocation();
     const { articleId } = useParams();
     const iframeRef = useRef(null);
     const [url, setUrl] = useState(articleId);
@@ -56,7 +55,7 @@ const TestPage = () => {
                                 max-width: 100%;
                                
                             }
-                            #aswift_1_host, .adscontent {
+                            #aswift_1_host, .adscontent, .breadcrumb2 {
                                 display: none !important;
                             }
                         </style>
