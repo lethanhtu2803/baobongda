@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRssFeed } from "../../helper/rssFetcher";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -69,7 +69,7 @@ const Home = () => {
                                                             </span>
                                                             <h2>
                                                                 <Link
-                                                                   to={`/test/${encodeURIComponent(item.link)}`}
+                                                                   to={`/news-details/${encodeURIComponent(item.link)}`}
                                                                     data-animation="fadeInUp"
                                                                     data-delay=".4s"
                                                                     data-duration="1000ms"
@@ -77,7 +77,6 @@ const Home = () => {
                                                                     {item.title}
                                                                 </Link>
                                                             </h2>
-                                                            
                                                             <p
                                                                 data-animation="fadeInUp"
                                                                 data-delay=".6s"
@@ -115,14 +114,14 @@ const Home = () => {
                                                                 )}
                                                             </span>
                                                             <h3 className="text-light fs-1">
-                                                                <a
-                                                                    href="latest_news.html"
+                                                                <Link
+                                                                   to={`/news-details/${encodeURIComponent(item.link)}`}
                                                                     data-animation="fadeInUp"
                                                                     data-delay=".4s"
                                                                     data-duration="1000ms"
                                                                 >
                                                                     {item.title}
-                                                                </a>
+                                                                </Link>
                                                             </h3>
                                                             <p
                                                                 data-animation="fadeInUp"

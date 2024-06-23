@@ -27,7 +27,7 @@ const Login = () => {
         // Lưu thông tin đăng nhập vào LocalStorage
         localStorage.setItem(
           "currentUser",
-          JSON.stringify({ username: account.username, status: data.status})
+          JSON.stringify({username: account.username, status: data.status})
         );
         navigate("/blog");
         window.location.reload();

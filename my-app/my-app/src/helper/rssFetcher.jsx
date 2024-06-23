@@ -39,9 +39,11 @@ export const useRssFeed = (type) => {
         const atomLink = item.getElementsByTagNameNS(atomNamespace, "link")[0];
         const atomLinkHref = atomLink ? atomLink.getAttribute('href') : null;
 
+        const link1 = item.getElementsByTagName("link")[0]?.textContent;
+        const startIndex = link1.indexOf("/", link1.indexOf("/") + 4);
         return {
           title: cdataTitle,
-          link: item.getElementsByTagName("link")[0]?.textContent,
+          link: link1.substring(startIndex),
           description: cdataContent,
           pubDate: timeSincePost,
           mediaContent: url,

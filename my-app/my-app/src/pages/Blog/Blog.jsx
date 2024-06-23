@@ -40,7 +40,7 @@ const Blog = () => {
           mediaContent: url,
           category: item.getElementsByTagName("category")[0]?.textContent,
         };
-      });
+      }).filter((item) => item.link);
       setRssItems(parsedItems);
       setPageCount(Math.ceil(parsedItems.length / itemsPerPage));
       setLoading(false);
@@ -94,8 +94,8 @@ const Blog = () => {
                       <p>{item.description}</p>
                       <ul className="blog-info-link">
                         <li>
-                          <a href="#">
-                            <i className="fa fa-user"></i> Travel, Lifestyle
+                          <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                          <i class="fa-solid fa-share-from-square"></i> Facebook
                           </a>
                         </li>
                         <li>

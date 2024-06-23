@@ -12,4 +12,5 @@ public interface AccountService {
 	public boolean login(String username,  String password, boolean status);
 	public boolean save(com.example.demo.dtos.AccountDTO accountDTO);
 	public AccountDTO findByUsername(String username);
+	public Account findByID(int id);
 }
