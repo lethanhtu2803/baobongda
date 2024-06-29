@@ -121,39 +121,42 @@ const CommentSection = ({ linkNews }) => {
     }, [linkNews]);
 
     return (
-        <div className="mt-6 px-4">
-            <h2 className="text-xl font-bold mb-4">Bình luận</h2>
-            <form onSubmit={handleCommentSubmit} className="mb-4">
-                <input
-                    type="text"
-                    value={currentUser ? currentUser.username : ''}
-                    readOnly
-                    className="w-full p-2 mb-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Tên của bạn"
-                />
-                <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows="4"
-                    placeholder="Nhập bình luận của bạn..."
-                ></textarea>
-                <button
-                    type="submit"
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                >
-                    Gửi bình luận
-                </button>
-            </form>
-            <div>
-                {comments.map((comment, index) => (
-                    <div key={index} className="mb-4 p-4 border border-gray-200 rounded-md">
-                        <p className="font-bold">{comment.accountUsername}</p>
-                        <p>{comment.content}</p>
+        <div className="mt-6 px-4 max-w-xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-center">Bình luận</h2>
+        <form onSubmit={handleCommentSubmit} className="mb-6 flex flex-col items-center">
+            <input
+                type="text"
+                value={currentUser ? currentUser.username : ''}
+                readOnly
+                className="w-full p-3 mb-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Tên của bạn"
+            />
+            <textarea
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                rows="4"
+                placeholder="Nhập bình luận của bạn..."
+            ></textarea>
+            <button
+                type="submit"
+                className="w-full py-3 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600 transition duration-300"
+            >
+                Gửi bình luận
+            </button>
+        </form>
+        <div className="space-y-6">
+            {comments.map((comment, index) => (
+                <div key={index} className="p-4 bg-white shadow-md rounded-lg">
+                    <div className="flex items-center mb-2">
+                        <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                        <p className="font-bold text-lg">{comment.accountUsername}</p>
                     </div>
-                ))}
-            </div>
+                    <p className="text-gray-700">{comment.content}</p>
+                </div>
+            ))}
         </div>
+    </div>
     );
 };
 

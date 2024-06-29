@@ -29,13 +29,14 @@ const Home = () => {
     }
 
     if (
-        error ||
-        errorTransferNews ||
-        errorHotNews ||
-        errorScheduleNews ||
-        errorVLeagueNews ||
-        errorC1News || errorResultNews || errorVietNamNews || errorBackstageNews
+        error &&
+        errorTransferNews &&
+        errorHotNews &&
+        errorScheduleNews &&
+        errorVLeagueNews &&
+        errorC1News && errorResultNews && errorVietNamNews && errorBackstageNews
     ) {
+        window.location.reload();
         return <div>Error: </div>;
     }
 
@@ -507,6 +508,7 @@ const Home = () => {
                                                                                     <img
                                                                                         src={item.mediaContent}
                                                                                         alt={item.title}
+                                                                                        height={212}
                                                                                     />
                                                                                 )}
                                                                             </div>
