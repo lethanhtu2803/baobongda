@@ -9,7 +9,7 @@ const Footer = () => {
         <div class="footer-area footer-padding">
             <div class="container">
                 <div class="row d-flex justify-content-between">
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-8">
+                    <div class="col-xl-9 col-lg-3 col-md-5 col-sm-8">
                         <div class="single-footer-caption mb-50">
                             <div class="single-footer-caption mb-30">
                       
@@ -18,15 +18,17 @@ const Footer = () => {
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">
-                                        <p class="info1">Lorem ipsum dolor sit amet, nsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
-                                        <p class="info2">198 West 21th Street, Suite 721 New York,NY 10010</p>
-                                        <p class="info2">Phone: +95 (0) 123 456 789 Cell: +95 (0) 123 456 789</p>
+                                        <p class="info1">© 2024. Trang thông tin điện tử tổng hợp về bóng đá T-FootballNews.</p>
+                                        <p class="info2">Giấy phép số: 1183/GP-TTĐT cấp ngày 04/04/2016 bởi Sở TT-TT Hà Nội, thay thế giấy phép 258/GP-TTĐT cấp ngày 07/04/2011 bởi Sở TT-TT Hà Nội</p>
+                                        <p class="info2">Chịu trách nhiệm nội dung: Nguyễn Hoàng Tú, Lê Thanh Tú, Đỗ Đức Thiện.</p>
+                                        <p class="info2">Địa chỉ: 100, đường 11, khu phố Nhị Đồng 1, Tp Dĩ An, Bình Dương.</p>
+                                        <p class="info2">Liên hệ quảng cáo: neverabc2003@gmail.com (+84 397 205 667).</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 col-lg-4 col-md-5 col-sm-7">
+                    {/* <div class="col-xl-4 col-lg-4 col-md-5 col-sm-7">
                         <div class="single-footer-caption mb-50">
                             <div class="footer-tittle">
                                 <h4>Popular post</h4>
@@ -62,7 +64,7 @@ const Footer = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
                         <div class="single-footer-caption mb-50">
                             <div class="banner">

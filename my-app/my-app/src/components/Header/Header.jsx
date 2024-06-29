@@ -46,7 +46,7 @@ const Header = () => {
                 </div>
               </div>
             </div>
-            <div className="header-mid gray-bg">
+            <div className="header-mid gray-bg" style={{padding: 0}}>
               <div className="container">
                 <div className="row d-flex align-items-center">
                   <div className="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
@@ -78,10 +78,30 @@ const Header = () => {
                       <nav>
                         <ul id="navigation">
                           <li>
-                            <Link to="/">Home</Link>
+                            <Link to="/">Trang chủ</Link>
                           </li>
                           <li>
-                            <Link to="/about">About</Link>
+                            <a href="/euro">Euro</a>
+                            <ul className="submenu">
+                              <li>
+                                <Link to="/schedule-euro">Lịch thi đấu Euro</Link>
+                              </li>
+                              <li>
+                                <a href="/result-euro">Kết quả Euro</a>
+                              </li>
+                              <li>
+                                <a href="/charts-euro">BXH Euro</a>
+                              </li>
+                              <li>
+                                <a href="/statistical-euro">Thống kê Euro</a>
+                              </li>
+                              <li>
+                                <a href="/top-goal-euro">Vua phá lưới</a>
+                              </li>
+                              <li>
+                                <a href="/identify-euro">Nhận định Euro</a>
+                              </li>
+                            </ul>
                           </li>
                           <li>
                             <Link to="/category">Category</Link>
