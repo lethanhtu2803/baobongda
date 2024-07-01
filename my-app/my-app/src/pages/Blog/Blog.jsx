@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { extractImageUrl } from "../../helper/RSSImage";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import { Toast } from 'primereact/toast';
 
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 const Blog = () => {
@@ -11,6 +12,13 @@ const Blog = () => {
   const itemsPerPage = 5; // mỗi trang có 5 bài
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+  const [isSaved, setIsSaved] = useState(null);
+  const navigate = useNavigate();
+  const toast = useRef(null);
+
+    const show = () => {
+        toast.current.show({ severity: 'success', summary: 'Thông báo', detail: 'Lưu bài viết thành công' });
+    };
 
   const FetchDataFromRssFeed = async () => {
     try {
@@ -61,6 +69,74 @@ const Blog = () => {
 
   const currentItems = rssItems.slice(itemOffset, itemOffset + itemsPerPage);
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+ 
+  const checkSave = async (link) => {
+    
+    try {
+      const response = await  fetch(`http://localhost:8087/api/favorite/countFavoriteByAccountID?link=https://bongda24h.vn/doi-bong/italia-va-giac-mo-hoang-duong-tu-nhung-lan-chet-hut-405-392130.html&username=${currentUser.username}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+  
+      });
+      const data = await response.json();
+      if (data.status === true) {
+        setIsSaved(true);
+        console.log('trueee');
+        return false;
+      } else {
+        console.log('false');
+        return true;
+      }
+      
+     
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      return false;
+    
+    }
+
+  }
+
+  const handleSaveClick = async(item) => {
+    if(!currentUser) {
+      navigate('/login')
+    }
+    const news = {
+      accountUsername: currentUser.username,
+      link: item.link,
+      description: item.description,
+      pubDate: new Date(item.pubDate),
+      image: item.mediaContent,
+      created: new Date(),
+      title: item.title,
+      category: item.category,
+      status: true,
+    };
+    try {
+      const response = await fetch("http://localhost:8087/api/favorite/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(news),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        show();
+        setIsSaved(prevState => ({ ...prevState, [item.link]: true }));
+      } else {
+        console.error("Error submitting form:", data.status);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
+  
+};
+
   return (
     <div>
       <section class="blog_area section-padding">
@@ -98,10 +174,14 @@ const Blog = () => {
                           <i class="fa-solid fa-share-from-square"></i> Facebook
                           </a>
                         </li>
-                        <li>
-                          <a href="#">
-                            <i className="fa fa-comments"></i> 03 Comments
-                          </a>
+                        <li>                        
+                          <button
+                          onClick={() => handleSaveClick(item)}
+                          
+                    >
+                        {checkSave(item.link) != null ? "Đã lưu" : '♥'}
+                    </button>
+                    <Toast ref={toast} />
                         </li>
                       </ul>
                     </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   const [user, setUser] = useState(null);
@@ -78,53 +78,76 @@ const Header = () => {
                       <nav>
                         <ul id="navigation">
                           <li>
-                            <Link to="/">Trang chủ</Link>
+                            <NavLink to="/" className={({ isActive }) => (isActive ? "active-link" : "")}>Trang chủ</NavLink>
                           </li>
                           <li>
-                            <a href="/euro">Euro</a>
+                            <NavLink to="/euro" className={({ isActive }) => (isActive ? "text-rose-600" : "")}>Euro</NavLink>
                             <ul className="submenu">
                               <li>
-                                <Link to="/schedule-euro">Lịch thi đấu Euro</Link>
+                                <NavLink to="/schedule-euro">Lịch thi đấu Euro</NavLink>
                               </li>
                               <li>
-                                <a href="/result-euro">Kết quả Euro</a>
+                                <NavLink to="/result-euro">Kết quả Euro</NavLink>
                               </li>
                               <li>
-                                <a href="/charts-euro">BXH Euro</a>
+                                <NavLink to="/charts-euro">BXH Euro</NavLink>
                               </li>
                               <li>
-                                <a href="/statistical-euro">Thống kê Euro</a>
+                                <NavLink to="/statistical-euro">Thống kê Euro</NavLink>
                               </li>
                               <li>
-                                <a href="/top-goal-euro">Vua phá lưới</a>
+                                <NavLink to="/top-goal-euro">Vua phá lưới</NavLink>
                               </li>
                               <li>
-                                <a href="/identify-euro">Nhận định Euro</a>
+                                <NavLink to="/identify-euro">Nhận định Euro</NavLink>
                               </li>
                             </ul>
                           </li>
                           <li>
-                            <Link to="/category">Category</Link>
-                          </li>
-                          <li>
-                            <Link to="/latest">Lastet News</Link>
-                          </li>
-                          <li>
-                            <a href="#">Pages</a>
+                            <NavLink to="/english" className={({ isActive }) => (isActive ? "text-rose-600" : "")}>Anh</NavLink>
                             <ul className="submenu">
                               <li>
-                                <Link to="/blog">Blog</Link>
+                                <NavLink to="/schedule-euro">Lịch thi đấu Euro</NavLink>
                               </li>
                               <li>
-                                <Link to="/blog-details">Blog Details</Link>
+                                <NavLink to="/result-euro">Kết quả Euro</NavLink>
                               </li>
                               <li>
-                                <a href="elements.html">Element</a>
+                                <NavLink to="/charts-euro">BXH Euro</NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/statistical-euro">Thống kê Euro</NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/top-goal-euro">Vua phá lưới</NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/identify-euro">Nhận định Euro</NavLink>
                               </li>
                             </ul>
                           </li>
                           <li>
-                            <a href="contact.html">Contact</a>
+                            <NavLink to="/category">Category</NavLink>
+                          </li>
+                          <li>
+                            <NavLink to="/latest">Tin nóng</NavLink>
+                          </li>
+                          <li>
+                            <a to="">Pages</a>
+                            <ul className="submenu">
+                              <li>
+                                <NavLink to="/blog">Blog</NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="/blog-details">Blog Details</NavLink>
+                              </li>
+                              <li>
+                                <NavLink to="elements.html">Element</NavLink>
+                              </li>
+                            </ul>
+                          </li>
+                          <li>
+                            <NavLink to="">Contact</NavLink>
                           </li>
                         </ul>
                       </nav>
@@ -218,6 +241,16 @@ const Header = () => {
                                 }}
                               >
                                 Đăng xuất
+                              </Link>
+                                ) : (
+                                  <></>
+                              )}
+                              {user ? (
+                                <Link
+                                to="/save-news"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                              >
+                                Xem bài viết đã lưu
                               </Link>
                                 ) : (
                                   <></>
