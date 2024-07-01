@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { extractImageUrl } from '../../helper/RSSImage';
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
-const Latest = () => {
+const SaveNews = () => {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const [ favoriteNews, setFavoriteNews ] = useState();
     const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -48,6 +50,26 @@ const Latest = () => {
   useEffect(() => {
     FetchDataFromRssFeed();
   }, []);
+
+  const findAllFavorite = async () => {
+    try {
+        const response = await fetch(`http://localhost:8087/api/favorite/findFavoriteByAccountID/${currentUser.username}`, {
+            method: "GET",
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            setFavoriteNews(data);
+        } else {
+            console.error("Error fetching comments:", response.status);
+        }
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+    }
+};
+    useEffect(() => {
+        findAllFavorite()
+    }, []);
   if (loading) return <div className='w-10 h-10 rounded-full border-4 border-primary border-t-0 border-t-transparent mx-auto animate-spin mb-5 mt-5'></div>;
   if (error) return <p>Error: {error.message}</p>;
     return (
@@ -60,18 +82,38 @@ const Latest = () => {
                     <div class="col-lg-8">
                   
                         <div class="about-right mb-90">
-                        {rssItems.length > 0 && rssItems.map((item) => (
-                            <>
-                            <div class="about-img">
-                            {item.mediaContent && <img src={item.mediaContent} alt={item.title} />}
-                            </div>
-                            <div class="heading-news mb-30 pt-30">
-                                <h3>{item.title}</h3>
-                            </div>
-                            <div class="about-prea">
-                                <p class="about-pera1 mb-25">{item.description}</p>
-                            </div> 
-                            </>
+                        {favoriteNews.map((item, index) => (
+                            <article className="blog_item" key={index}>
+                    <div className="blog_item_img">
+                      <img
+                        className="card-img rounded-0"
+                        src={item.image}
+                        alt=""
+                      />
+                      <a href="#" className="blog_item_date">
+                        <h3>{new Date(item.pubDate).getDate()}</h3>
+                        <p>
+                          {new Date(item.pubDate).toLocaleString("default", {
+                            month: "short",
+                          })}
+                        </p>
+                      </a>
+                    </div>
+
+                    <div className="blog_details">
+                      <a className="d-inline-block" href={item.link}>
+                        <h2>{item.title}</h2>
+                      </a>
+                      <p>{item.description}</p>
+                      <ul className="blog-info-link">
+                        <li>
+                          <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                          <i class="fa-solid fa-share-from-square"></i> Facebook
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </article>
                             ))}
                             {/* <div class="social-share pt-30">
                                 <div class="section-tittle">
@@ -174,4 +216,4 @@ const Latest = () => {
     );
 };
 
-export default Latest;
+export default SaveNews;

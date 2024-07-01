@@ -1,4 +1,7 @@
 import {createBrowserRouter, RouterProvider, Route, Outlet} from 'react-router-dom';
+
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+
 import Home from './pages/Home/Home';
 
 import Product from './pages/Blog/Blog';
@@ -6,7 +9,6 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import BlogDetails from './pages/BlogDetails/BlogDetails';
 import Blog from './pages/Blog/Blog';
-import About from './pages/About/About';
 import Category from './pages/Category/Category';
 import Latest from './pages/Latest/Latest';
 import Test from './pages/Test/Test';
@@ -31,6 +33,8 @@ import RankingEuro from './pages/Euro/RankingEuro';
 import StatisticalEuro from './pages/Euro/StatisticalEuro';
 import TopSoccerEuro from './pages/Euro/TopSoccerEuro';
 import IdentifyEuro from './pages/Euro/IdentifyEuro';
+import FootballEnglish from './components/football-en/FootballEnglish';
+import SaveNews from './pages/SaveNews/SaveNews';
 
 const Layout = () => {
   return (
@@ -142,6 +146,14 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile></Profile>
+      },
+      {
+        path: '/english',
+        element: <FootballEnglish></FootballEnglish>
+      },
+      {
+        path: '/save-news',
+        element: <SaveNews></SaveNews>
       },
     ]
   },
