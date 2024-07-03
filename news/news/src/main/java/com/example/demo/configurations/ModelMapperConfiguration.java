@@ -11,8 +11,10 @@ import org.springframework.core.env.Environment;
 
 import com.example.demo.dtos.AccountDTO;
 import com.example.demo.dtos.CommentDTO;
+import com.example.demo.dtos.FavoriteDTO;
 import com.example.demo.entities.Account;
 import com.example.demo.entities.Comment;
+import com.example.demo.entities.Favorite;
 
 
 
@@ -63,7 +65,27 @@ public class ModelMapperConfiguration {
 			}
 			
 		});
+		
+		mapper.addMappings(new PropertyMap<Favorite, FavoriteDTO>() {
 
+			@Override
+			protected void configure() {
+				map().setId(source.getId());
+				map().setCategory(source.getCategory());
+				map().setImage(source.getImage());
+				map().setTitle(source.getTitle());
+				map().setLink(source.getLink());
+				map().setStatus(source.isStatus());
+				map().setDescription(source.getDescription());
+				map().setCreated(source.getCreated());
+				map().setPubDate(source.getPubDate());
+				map().setAccountUsername(source.getAccount().getUsername());
+				map().setAccountID(source.getAccount().getId());
+				
+			}
+			
+		});
+		
 		return mapper;
 	}
 }
