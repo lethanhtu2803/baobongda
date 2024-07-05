@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { extractImageUrl } from '../../helper/RSSImage';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 
 const SaveNews = () => {
@@ -8,6 +10,66 @@ const SaveNews = () => {
   const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const toastBC = useRef(null);
+
+  const clear = () => {
+    setVisible(false);
+    toastBC.current.clear();
+  };
+
+  const confirm = (item) => {
+    setVisible(true);
+    toastBC.current.show({
+      severity: 'success',
+      summary: 'Bạn có muốn xóa bài viết?',
+      sticky: true,
+      content: (props) => (
+        <div className="flex flex-col items-start p-4shadow-lg rounded-lg w-80">
+        <div className="text-lg font-medium text-gray-900 mb-2">{props.message.summary}</div>
+        <div className="flex space-x-2">
+          <Button 
+            className="p-button-sm flex items-center justify-center px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600" 
+            label="Có" 
+            onClick={() => handleDeleteConfirmed(item)}>
+          </Button>
+          <Button 
+            className="p-button-sm flex items-center justify-center px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600" 
+            label="Không" 
+            onClick={clear}>
+          </Button>
+        </div>
+      </div>
+      )
+    });
+  };
+
+  const handleDeleteConfirmed = async (item) => {
+    try {
+      const response = await fetch(`http://localhost:8087/api/favorite/delete/${item.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          accountUsername: currentUser.username,
+          link: item.link,
+        }),
+      });
+
+      if (response.ok) {
+        setFavoriteNews(favoriteNews.filter(news => news.link !== item.link));
+        const savedStatus = JSON.parse(localStorage.getItem('savedStatus')) || {};
+        delete savedStatus[item.link];
+        localStorage.setItem('savedStatus', JSON.stringify(savedStatus));
+        clear();
+      } else {
+        console.error("Error deleting favorite news:", response.status);
+      }
+    } catch (error) {
+      console.error("Error deleting favorite news:", error);
+    }
+  };
 
   const FetchDataFromRssFeed = async () => {
     try {
@@ -25,7 +87,7 @@ const SaveNews = () => {
         const url = extractImageUrl(descriptionCData);
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
         const cdataContent = descriptionCData.replace(/<[^>]+>/g, '');
-      
+
         return {
           title: cdataTitle,
           link: item.getElementsByTagName('link')[0]?.textContent,
@@ -60,29 +122,6 @@ const SaveNews = () => {
     }
   };
 
-  const handleDeleteClick = async (item) => {
-    try {
-      const response = await fetch(`http://localhost:8087/api/favorite/delete/${item.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          accountUsername: currentUser.username,
-          link: item.link,
-        }),
-      });
-
-      if (response.ok) {
-        setFavoriteNews(favoriteNews.filter(news => news.link !== item.link));
-      } else {
-        console.error("Error deleting favorite news:", response.status);
-      }
-    } catch (error) {
-      console.error("Error deleting favorite news:", error);
-    }
-  };
-
   useEffect(() => {
     FetchDataFromRssFeed();
   }, []);
@@ -96,6 +135,7 @@ const SaveNews = () => {
 
   return (
     <div>
+      <Toast ref={toastBC} position="bottom-center" onRemove={clear} />
       <main>
         <div className="about-area2 gray-bg pt-10 pb-60">
           <div className="container">
@@ -124,13 +164,7 @@ const SaveNews = () => {
                             </a>
                           </li>
                           <li>
-                            <button onClick={() => handleDeleteClick(item)} className="delete-button" style={{
-                              fontSize: '14px',
-                              color: '#999999',
-                              background: 'none',
-                              border: 'none',
-                              cursor: 'pointer'
-                            }}>
+                            <button onClick={() => confirm(item)} className="delete-button">
                               🗑️ Xóa
                             </button>
                           </li>

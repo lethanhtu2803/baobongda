@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { Toast } from 'primereact/toast';
 
+
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 const Blog = () => {
   const [rssItems, setRssItems] = useState([]);
@@ -13,6 +14,7 @@ const Blog = () => {
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [isSaved, setIsSaved] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const toast = useRef(null);
 
@@ -130,6 +132,7 @@ const Blog = () => {
         console.error("Error submitting form:", data.status);
       }
     } catch (error) {
+      window.location.reload();
       console.error("Error submitting form:", error);
     }
   };
@@ -142,7 +145,11 @@ const Blog = () => {
   if (loading) return <div className='w-10 h-10 rounded-full border-4 border-primary border-t-0 border-t-transparent mx-auto animate-spin mb-5 mt-5'></div>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const currentItems = rssItems.slice(itemOffset, itemOffset + itemsPerPage);
+  const filteredItems = rssItems.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const currentItems = filteredItems.slice(itemOffset, itemOffset + itemsPerPage);
 
   return (
     <div>
@@ -228,9 +235,10 @@ const Blog = () => {
                         <input
                           type="text"
                           class="form-control"
-                          placeholder="Search Keyword"
+                          placeholder="Tìm kiếm"
                           onfocus="this.placeholder = ''"
                           onblur="this.placeholder = 'Search Keyword'"
+                          onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         <div class="input-group-append">
                           <button class="btns" type="button">
@@ -239,12 +247,6 @@ const Blog = () => {
                         </div>
                       </div>
                     </div>
-                    <button
-                      class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                      type="submit"
-                    >
-                      Search
-                    </button>
                   </form>
                 </aside>
 

@@ -1,9 +1,8 @@
 import {createBrowserRouter, RouterProvider, Route, Outlet} from 'react-router-dom';
 
-import "primereact/resources/themes/lara-light-cyan/theme.css";
+
 
 import Home from './pages/Home/Home';
-
 import Product from './pages/Blog/Blog';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';

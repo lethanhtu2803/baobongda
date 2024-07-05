@@ -1,10 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { extractImageUrl } from '../../helper/RSSImage';
+import { useNavigate } from 'react-router-dom';
+import ReactPaginate from "react-paginate";
+import { Toast } from 'primereact/toast';
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 const Latest = () => {
     const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const itemsPerPage = 5; // mỗi trang có 5 bài
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [isSaved, setIsSaved] = useState({});
+  const navigate = useNavigate();
+  const toast = useRef(null);
+
+  const showSuccessToast = () => {
+    toast.current.show({ severity: 'success', summary: 'Thông báo', detail: 'Lưu bài viết thành công' });
+  };
+
 
   const FetchDataFromRssFeed = async () => {
     try {
@@ -48,43 +62,165 @@ const Latest = () => {
   useEffect(() => {
     FetchDataFromRssFeed();
   }, []);
+
+  useEffect(() => {
+    const savedStatus = JSON.parse(localStorage.getItem('savedStatus')) || {};
+    setIsSaved(savedStatus);
+  }, []);
+
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  const checkSave = async (link) => {
+    try {
+      const response = await fetch(`http://localhost:8087/api/favorite/countFavoriteByAccountID?link=${link}&username=${currentUser.username}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      return data.status === true;
+    } catch (error) {
+      console.error("Error checking save status:", error);
+      return false;
+    }
+  }
+
+  const handleSaveClick = async (item) => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    if (await checkSave(item.link)) {
+      showSuccessToast();
+      const updatedState = { ...isSaved, [item.link]: true };
+      setIsSaved(updatedState);
+      localStorage.setItem('savedStatus', JSON.stringify(updatedState));
+      return;
+    }
+
+    const news = {
+      accountUsername: currentUser.username,
+      link: item.link,
+      description: item.description,
+      pubDate: new Date(item.pubDate),
+      image: item.mediaContent,
+      created: new Date(),
+      title: item.title,
+      category: item.category,
+      status: true,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8087/api/favorite/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(news),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        showSuccessToast();
+        const updatedState = { ...isSaved, [item.link]: true };
+        setIsSaved(updatedState);
+        localStorage.setItem('savedStatus', JSON.stringify(updatedState));
+      } else {
+        console.error("Error submitting form:", data.status);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % rssItems.length;
+    setItemOffset(newOffset);
+  };
+
   if (loading) return <div className='w-10 h-10 rounded-full border-4 border-primary border-t-0 border-t-transparent mx-auto animate-spin mb-5 mt-5'></div>;
   if (error) return <p>Error: {error.message}</p>;
+
+  const currentItems = rssItems.slice(itemOffset, itemOffset + itemsPerPage);
     return (
         <div>
             <main>
   
-    <div class="about-area2 gray-bg pt-60 pb-60">
+    <div class="about-area2 gray-bg pt-10 pb-60">
         <div class="container">
                 <div class="row">
                     <div class="col-lg-8">
                   
-                        <div class="about-right mb-90">
-                        {rssItems.length > 0 && rssItems.map((item) => (
-                            <>
-                            <div class="about-img">
-                            {item.mediaContent && <img src={item.mediaContent} alt={item.title} />}
-                            </div>
-                            <div class="heading-news mb-30 pt-30">
-                                <h3>{item.title}</h3>
-                            </div>
-                            <div class="about-prea">
-                                <p class="about-pera1 mb-25">{item.description}</p>
-                            </div> 
-                            </>
-                            ))}
-                            {/* <div class="social-share pt-30">
-                                <div class="section-tittle">
-                                    <h3 class="mr-20">Share:</h3>
-                                    <ul>
-                                        <li><a href="#"><img src="assets/img/news/icon-ins.png" alt=""/></a></li>
-                                        <li><a href="#"><img src="assets/img/news/icon-fb.png" alt=""/></a></li>
-                                        <li><a href="#"><img src="assets/img/news/icon-tw.png" alt=""/></a></li>
-                                        <li><a href="#"><img src="assets/img/news/icon-yo.png" alt=""/></a></li>
-                                    </ul>
-                                </div>
-                            </div> */}
-                        </div>
+                    <div className="blog_left_sidebar">
+                {rssItems.map((item, index) => (
+                  <article className="blog_item" key={index}>
+                    <div className="blog_item_img">
+                      <img
+                        className="card-img rounded-0"
+                        src={item.mediaContent}
+                        alt=""
+                      />
+                      <a href="#" className="blog_item_date">
+                        <h3>{new Date(item.pubDate).getDate()}</h3>
+                        <p>
+                          {new Date(item.pubDate).toLocaleString("default", {
+                            month: "short",
+                          })}
+                        </p>
+                      </a>
+                    </div>
+
+                    <div className="blog_details">
+                      <a className="d-inline-block" href={item.link}>
+                        <h2>{item.title}</h2>
+                      </a>
+                      <p>{item.description}</p>
+                      <ul className="blog-info-link">
+                        <li>
+                          <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                            <i className="fa-solid fa-share-from-square"></i> Facebook
+                          </a>
+                        </li>
+                        <li>
+                        <button
+                          onClick={() => handleSaveClick(item)}
+                          disabled={isSaved[item.link] === true}
+                          className={`text-base rounded-full text-black ${
+                            isSaved[item.link] === true ? 'cursor-not-allowed' : ''
+                          }`}
+                        >
+                          {isSaved[item.link] === true ? "Đã lưu" : '❤️'}
+                        </button>
+
+                          <Toast ref={toast} />
+                        </li>
+                      </ul>
+                    </div>
+                  </article>
+                ))}
+
+                <nav className="blog-pagination justify-content-center d-flex">
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel=" >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCount}
+                    previousLabel="< "
+                    renderOnZeroPageCount={null}
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    previousLinkClassName="page-link"
+                    nextLinkClassName="page-link"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                  />
+                </nav>
+              </div>
                       
                         {/* <div class="row">
                             <div class="col-lg-8">
