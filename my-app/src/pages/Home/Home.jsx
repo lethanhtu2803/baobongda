@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRssFeed } from "../../helper/rssFetcher";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { AutoComplete } from "primereact/autocomplete";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -14,6 +15,60 @@ const Home = () => {
     const { rssItems: rssResultNews, loading: loadingResultNews, error: errorResultNews, } = useRssFeed(333);
     const { rssItems: rssVietNamNews, loading: loadingVietNamNews, error: errorVietNamNews, } = useRssFeed(292);
     const { rssItems: rssBackstageNews, loading: loadingBackstageNews, error: errorBackstageNews, } = useRssFeed(188);
+
+    const [value, setValue] = useState('');
+    const [filteredTitles, setFilteredTitles] = useState([]);
+    const [titles, setTitles] = useState([]);
+
+    const search = (event) => {
+        // Timeout to emulate a network connection
+        setTimeout(() => {
+            let _filteredTitles;
+
+            if (!event.query.trim().length) {
+                _filteredTitles = [...titles];
+            } else {
+                const allRssItems = [
+                    ...rssItems,
+                    ...rssHotNews,
+                    ...rssTransferNews,
+                    ...rssScheduleNews,
+                    ...rssVLeagueNews,
+                    ...rssC1News,
+                    ...rssResultNews,
+                    ...rssVietNamNews,
+                    ...rssBackstageNews
+                ];
+
+                _filteredTitles = allRssItems.filter((item) => {
+                    return item.title.toLowerCase().includes(event.query.toLowerCase());
+                });
+            }
+
+            setFilteredTitles(_filteredTitles);
+        }, 250);
+    };
+
+    useEffect(() => {
+        const allRssItems = [
+            ...rssItems,
+            ...rssHotNews,
+            ...rssTransferNews,
+            ...rssScheduleNews,
+            ...rssVLeagueNews,
+            ...rssC1News,
+            ...rssResultNews,
+            ...rssVietNamNews,
+            ...rssBackstageNews
+        ];
+
+        const extractedTitles = allRssItems.map(item => item.title);
+        
+        setTitles(Array.from(new Set(extractedTitles)));
+    }, [rssItems, rssHotNews, rssTransferNews, rssScheduleNews, rssVLeagueNews, rssC1News, rssResultNews, rssVietNamNews, rssBackstageNews]);
+    
+
+
 
     if (
         loading ||
@@ -45,6 +100,20 @@ const Home = () => {
             <main>
                 <div className="trending-area fix pt-25 gray-bg">
                     <div className="container">
+                    <div className="relative mb-10 -right-[80%]">
+                        <AutoComplete
+                            value={value}
+                            suggestions={filteredTitles}
+                            completeMethod={search}
+                            onChange={(e) => setValue(e.value)}
+                            placeholder="Tìm kiếm..."
+                            field="title"
+                            inputClassName="w-full px-4 py-2"
+                            itemTemplate={(item) => (
+                                <Link to={`/news-details/${encodeURIComponent(item.link)}`}>{item.title}</Link>
+                            )}
+                        />
+                    </div>
                         <div className="trending-main">
                             <div className="row">
                                 <div className="col-lg-8">
