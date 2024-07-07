@@ -143,7 +143,7 @@ const NewsDetails = () => {
         setIframeLoaded(true);
         setTimeout(() => {
             setShowCommentSection(true);
-        }, 20000); 
+        }, 15000); 
     };
     const handleSaveClick = () => {
         setIsSaved(!isSaved);

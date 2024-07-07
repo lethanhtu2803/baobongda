@@ -13,7 +13,7 @@
 
 @layer components {
   .container {
-    max-width: 1280px;
+    max-width: 1372px;
     @apply mx-auto;
   }
   .container-fluid {
@@ -40,5 +40,17 @@
     width: 100%;
     height: calc(100% + 700px);
   }
-  
+  .main-header .main-menu ul li:first-child a {
+    padding-left: 0!important;
+  }
+  .main-header .main-menu ul li a  {
+    padding: 27px 14px !important;
+  }
+
+  .header-area .header-bottom .header-social {
+    padding: 27px!important;
+  }
+  .blog-info-link li::after {
+    color: #999999 !important;
+  }
 }

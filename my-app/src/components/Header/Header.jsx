@@ -49,21 +49,21 @@ const Header = () => {
                 <div className="row d-flex align-items-center">
                   <div className="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
                     <div className="logo">
-                      <a href="index.html">
+                      <a href="/">
                         <img src="assets/img/logo/logo.png" alt="" />
                       </a>
                     </div>
                   </div>
                   <div className="col-xl-9 col-lg-9 col-md-9">
                     <div className="header-banner f-right ">
-                      <img src="assets/img/gallery/header_card.png" alt="" />
+                      <img src="assets/img/banner/banner3.jpg" alt="" />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="header-bottom header-sticky">
-              <div className="container-fluid">
+              <div className="container">
                 <div className="row align-items-center">
                   <div className="col-xl-11 col-lg-11 col-md-11 header-flex">
                     <div className="sticky-logo">
@@ -283,7 +283,7 @@ const Header = () => {
                             <NavLink to="/latest" className={({ isActive }) => (isActive ? "active-link" : "")}>Tin chuyển nhượng</NavLink>
                           </li>
                           <li>
-                          <NavLink to="/blog" className={({ isActive }) => (isActive ? "active-link" : "")}>Mới nhất</NavLink>
+                          <NavLink to="/blog" className={({ isActive }) => (isActive ? "active-link" : "")}>Nhận định</NavLink>
                           </li>
                           <li>
                             <NavLink to="/hotnews" className={({ isActive }) => (isActive ? "active-link" : "")}>Tin nóng</NavLink>

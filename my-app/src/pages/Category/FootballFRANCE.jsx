@@ -1,13 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { extractImageUrl } from '../../helper/RSSImage';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRssFeed } from '../../helper/rssFetcher';
+import { Toast } from 'primereact/toast';
 
-const FootballFRANCE = () => {
+const FootballENG = () => {
     const { rssItems, loading, error } = useRssFeed(197);
+    const [isSaved, setIsSaved] = useState({});
+    const navigate = useNavigate();
+    const toast = useRef(null);
 
+  const showSuccessToast = () => {
+    toast.current.show({ severity: 'success', summary: 'Thông báo', detail: 'Lưu bài viết thành công' });
+  };
+  useEffect(() => {
+    const savedStatus = JSON.parse(localStorage.getItem('savedStatus')) || {};
+    setIsSaved(savedStatus);
+  }, []);
+
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+  const checkSave = async (link) => {
+    try {
+      const response = await fetch(`http://localhost:8087/api/favorite/countFavoriteByAccountID?link=${link}&username=${currentUser.username}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      return data.status === true;
+    } catch (error) {
+      console.error("Error checking save status:", error);
+      return false;
+    }
+  }
+
+  const handleSaveClick = async (item) => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
+    if (await checkSave(item.link)) {
+      showSuccessToast();
+      const updatedState = { ...isSaved, [item.link]: true };
+      setIsSaved(updatedState);
+      localStorage.setItem('savedStatus', JSON.stringify(updatedState));
+      return;
+    }
+
+    const news = {
+      accountUsername: currentUser.username,
+      link: item.link,
+      description: item.description,
+      pubDate: new Date(item.pubDate),
+      image: item.mediaContent,
+      created: new Date(),
+      title: item.title,
+      category: item.category,
+      status: true,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8087/api/favorite/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(news),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        showSuccessToast();
+        const updatedState = { ...isSaved, [item.link]: true };
+        setIsSaved(updatedState);
+        localStorage.setItem('savedStatus', JSON.stringify(updatedState));
+      } else {
+        console.error("Error submitting form:", data.status);
+      }
+    } catch (error) {
+      window.location.reload();
+      console.error("Error submitting form:", error);
+    }
+  };
     if (loading) return <div className='w-10 h-10 rounded-full border-4 border-primary border-t-0 border-t-transparent mx-auto animate-spin mb-5 mt-5'></div>;
     if (error) return <div>Error: {error.message}</div>;
     return (
@@ -54,350 +133,47 @@ const FootballFRANCE = () => {
                                             <div className="col-xl-6 col-lg-6 col-md-6">
                                                 <div className="whats-news-single mb-20">
                                                     <div className="whates-img">
-                                                    {item.mediaContent && <img src={item.mediaContent} alt={item.title} className='h-56'/>}
+                                                    {item.mediaContent && <img src={item.mediaContent} alt={item.title} classNameName='h-56'/>}
                                                     </div>
                                                     <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">{item.title}</a></h4>
+                                                        <h4>
+                                                            <Link
+                                                                to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                data-animation="fadeInUp"
+                                                                data-delay=".4s"
+                                                                data-duration="1000ms"
+                                                            >
+                                                                {item.title}
+                                                            </Link>
+                                                        </h4>
                                                         <span>{item.pubDate}</span>
                                                         <p>{item.description}</p>
                                                     </div>
+                                                    <ul className="blog-info-link mt-3">
+                                                            <li>
+                                                            <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                                                                <i className="fa-solid fa-share-from-square"></i> Facebook
+                                                            </a>
+                                                            </li>
+                                                            <li>
+                                                            <button
+                                                            onClick={() => handleSaveClick(item)}
+                                                            disabled={isSaved[item.link] === true}
+                                                            className={`text-base rounded-full text-black ${
+                                                                isSaved[item.link] === true ? 'cursor-not-allowed' : ''
+                                                            }`}
+                                                            >
+                                                            {isSaved[item.link] === true ? "Đã lưu" : '❤️'}
+                                                            </button>
+
+                                                            <Toast ref={toast} />
+                                                            </li>
+                                                        </ul>
                                                 </div>
                                             </div>
                                         ))}
                                         </div>
                                     </div>
-                                  
-                                    {/* <div className="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                        <div className="row">
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details4.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details6.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details5.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details4.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details5.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details1.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                              
-                                    <div className="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                        <div className="row">
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details3.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details5.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details1.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details4.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details3.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details6.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                          
-                                    <div className="tab-pane fade" id="nav-last" role="tabpanel" aria-labelledby="nav-last-tab">
-                                        <div className="row">
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details6.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details2.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details4.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details2.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details5.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details1.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                              
-                                    <div className="tab-pane fade" id="nav-nav-Sport" role="tabpanel" aria-labelledby="nav-Sports">
-                                        <div className="row">
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details1.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details2.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details3.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details4.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details5.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="whats-news-single mb-40 mb-40">
-                                                    <div className="whates-img">
-                                                        <img src="assets/img/gallery/whats_news_details6.png" alt=""/>
-                                                    </div>
-                                                    <div className="whates-caption whates-caption2">
-                                                        <h4><a href="#">Secretart for Economic Air
-                                                            plane that looks like</a></h4>
-                                                        <span>by Alice cloe   -   Jun 19, 2020</span>
-                                                        <p>Struggling to sell one multi-million dollar home currently on the market won’t stop actress and singer Jennifer Lopez.</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> */}
                                 </div>
                        
                             </div>
@@ -406,33 +182,6 @@ const FootballFRANCE = () => {
                 </div>
                 <div className="col-lg-4">
           <div className="blog_right_sidebar">
-            <aside className="single_sidebar_widget search_widget">
-              <form action="#">
-                <div className="form-group">
-                  <div className="input-group mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Search Keyword"
-                      onfocus="this.placeholder = ''"
-                      onblur="this.placeholder = 'Search Keyword'"
-                    />
-                    <div className="input-group-append">
-                      <button className="btns" type="button">
-                        <i className="ti-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  className="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </form>
-            </aside>
-
             <aside className="single_sidebar_widget post_category_widget">
               <h4 className="widget_title">Danh mục</h4>
               <ul className="list cat-list">
@@ -517,4 +266,4 @@ const FootballFRANCE = () => {
     );
 };
 
-export default FootballFRANCE;
+export default FootballENG;
