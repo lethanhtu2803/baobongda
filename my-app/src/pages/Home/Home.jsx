@@ -315,11 +315,16 @@ const Home = () => {
                                                                             )}
                                                                         </div>
                                                                         <div className="whates-caption">
-                                                                            <h4>
-                                                                                <a href="latest_news.html">
-                                                                                    {item.title}
-                                                                                </a>
-                                                                            </h4>
+                                                                        <h4>
+                                                                            <Link
+                                                                                to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                data-animation="fadeInUp"
+                                                                                data-delay=".4s"
+                                                                                data-duration="1000ms"
+                                                                            >
+                                                                                {item.title}
+                                                                            </Link>
+                                                                        </h4>
                                                                             <span>{item.pubDate}</span>
                                                                             <p>{item.description}</p>
                                                                         </div>
@@ -346,9 +351,14 @@ const Home = () => {
                                                                                     Tin nổi bật
                                                                                 </span>
                                                                                 <h4>
-                                                                                    <a href="latest_news.html">
+                                                                                    <Link
+                                                                                        to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                        data-animation="fadeInUp"
+                                                                                        data-delay=".4s"
+                                                                                        data-duration="1000ms"
+                                                                                    >
                                                                                         {item.title}
-                                                                                    </a>
+                                                                                    </Link>
                                                                                 </h4>
                                                                                 <p className="mt-2">{item.pubDate}</p>
                                                                             </div>
@@ -381,11 +391,16 @@ const Home = () => {
                                                                                 )}
                                                                             </div>
                                                                             <div className="whates-caption">
-                                                                                <h4>
-                                                                                    <a href="latest_news.html">
-                                                                                        {item.title}
-                                                                                    </a>
-                                                                                </h4>
+                                                                            <h4>
+                                                                                <Link
+                                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                    data-animation="fadeInUp"
+                                                                                    data-delay=".4s"
+                                                                                    data-duration="1000ms"
+                                                                                >
+                                                                                    {item.title}
+                                                                                </Link>
+                                                                            </h4>
                                                                                 <span>{item.pubDate}</span>
                                                                                 <p>{item.description}</p>
                                                                             </div>
@@ -412,9 +427,14 @@ const Home = () => {
                                                                                     Tin nóng
                                                                                 </span>
                                                                                 <h4>
-                                                                                    <a href="latest_news.html">
+                                                                                    <Link
+                                                                                        to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                        data-animation="fadeInUp"
+                                                                                        data-delay=".4s"
+                                                                                        data-duration="1000ms"
+                                                                                    >
                                                                                         {item.title}
-                                                                                    </a>
+                                                                                    </Link>
                                                                                 </h4>
                                                                                 <p className="mt-2">{item.pubDate}</p>
                                                                             </div>
@@ -447,11 +467,16 @@ const Home = () => {
                                                                                 )}
                                                                             </div>
                                                                             <div className="whates-caption">
-                                                                                <h4>
-                                                                                    <a href="latest_news.html">
-                                                                                        {item.title}
-                                                                                    </a>
-                                                                                </h4>
+                                                                            <h4>
+                                                                                <Link
+                                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                    data-animation="fadeInUp"
+                                                                                    data-delay=".4s"
+                                                                                    data-duration="1000ms"
+                                                                                >
+                                                                                    {item.title}
+                                                                                </Link>
+                                                                            </h4>
                                                                                 <span>{item.pubDate}</span>
                                                                                 <p>{item.description}</p>
                                                                             </div>
@@ -476,12 +501,17 @@ const Home = () => {
                                                                                 </div>
                                                                                 <div className="whats-right-cap">
                                                                                     <span className="colorb m-0">
-                                                                                        Tin nóng
+                                                                                        Chuyển nhượng
                                                                                     </span>
                                                                                     <h4>
-                                                                                        <a href="latest_news.html">
+                                                                                        <Link
+                                                                                            to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                            data-animation="fadeInUp"
+                                                                                            data-delay=".4s"
+                                                                                            data-duration="1000ms"
+                                                                                        >
                                                                                             {item.title}
-                                                                                        </a>
+                                                                                        </Link>
                                                                                     </h4>
                                                                                     <p className="mt-2">{item.pubDate}</p>
                                                                                 </div>
@@ -514,11 +544,16 @@ const Home = () => {
                                                                                 )}
                                                                             </div>
                                                                             <div className="whates-caption">
-                                                                                <h4>
-                                                                                    <a href="latest_news.html">
-                                                                                        {item.title}
-                                                                                    </a>
-                                                                                </h4>
+                                                                            <h4>
+                                                                                <Link
+                                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                    data-animation="fadeInUp"
+                                                                                    data-delay=".4s"
+                                                                                    data-duration="1000ms"
+                                                                                >
+                                                                                    {item.title}
+                                                                                </Link>
+                                                                            </h4>
                                                                                 <span>{item.pubDate}</span>
                                                                                 <p>{item.description}</p>
                                                                             </div>
@@ -543,12 +578,17 @@ const Home = () => {
                                                                                 </div>
                                                                                 <div className="whats-right-cap">
                                                                                     <span className="colorb m-0">
-                                                                                        Tin nóng
+                                                                                        Lịch thi đấu
                                                                                     </span>
                                                                                     <h4>
-                                                                                        <a href="latest_news.html">
+                                                                                        <Link
+                                                                                            to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                            data-animation="fadeInUp"
+                                                                                            data-delay=".4s"
+                                                                                            data-duration="1000ms"
+                                                                                        >
                                                                                             {item.title}
-                                                                                        </a>
+                                                                                        </Link>
                                                                                     </h4>
                                                                                     <p className="mt-2">{item.pubDate}</p>
                                                                                 </div>
@@ -583,9 +623,14 @@ const Home = () => {
                                                                             </div>
                                                                             <div className="whates-caption">
                                                                                 <h4>
-                                                                                    <a href="latest_news.html">
+                                                                                    <Link
+                                                                                        to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                        data-animation="fadeInUp"
+                                                                                        data-delay=".4s"
+                                                                                        data-duration="1000ms"
+                                                                                    >
                                                                                         {item.title}
-                                                                                    </a>
+                                                                                    </Link>
                                                                                 </h4>
                                                                                 <span>{item.pubDate}</span>
                                                                                 <p>{item.description}</p>
@@ -611,12 +656,17 @@ const Home = () => {
                                                                                 </div>
                                                                                 <div className="whats-right-cap">
                                                                                     <span className="colorb m-0">
-                                                                                        Tin nóng
+                                                                                        V-League
                                                                                     </span>
                                                                                     <h4>
-                                                                                        <a href="latest_news.html">
+                                                                                        <Link
+                                                                                            to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                            data-animation="fadeInUp"
+                                                                                            data-delay=".4s"
+                                                                                            data-duration="1000ms"
+                                                                                        >
                                                                                             {item.title}
-                                                                                        </a>
+                                                                                        </Link>
                                                                                     </h4>
                                                                                     <p className="mt-2">{item.pubDate}</p>
                                                                                 </div>
@@ -705,7 +755,14 @@ const Home = () => {
                                                         )}
                                                     </span>
                                                     <h4>
-                                                        <a href="latest_news.html">{item.title}</a>
+                                                        <Link
+                                                            to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                            data-animation="fadeInUp"
+                                                            data-delay=".4s"
+                                                            data-duration="1000ms"
+                                                        >
+                                                            {item.title}
+                                                        </Link>
                                                     </h4>
                                                     <p>{item.pubDate}</p>
                                                 </div>
@@ -755,12 +812,14 @@ const Home = () => {
                                                                         </div>
                                                                         <div className="weekly2-caption p-4">
                                                                             <h4 className="text-lg font-bold mb-2">
-                                                                                <a
-                                                                                    href="#"
-                                                                                    className="hover:text-blue-500"
+                                                                                <Link
+                                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                    data-animation="fadeInUp"
+                                                                                    data-delay=".4s"
+                                                                                    data-duration="1000ms"
                                                                                 >
                                                                                     {item.title}
-                                                                                </a>
+                                                                                </Link>
                                                                             </h4>
                                                                             <p className="text-gray-500 text-sm">
                                                                                 {item.pubDate}
@@ -810,9 +869,14 @@ const Home = () => {
                                                         </div>
                                                         <div class="what-cap mt-4">
                                                             <h4 class="text-sm font-medium">
-                                                                <a href="latest_news.html">
+                                                                <Link
+                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                    data-animation="fadeInUp"
+                                                                    data-delay=".4s"
+                                                                    data-duration="1000ms"
+                                                                >
                                                                     {item.title}
-                                                                </a>
+                                                                </Link>
                                                             </h4>
                                                             <p class="text-sm text-gray-500">{item.pubDate}</p>
                                                             {/* <a
@@ -983,7 +1047,16 @@ const Home = () => {
                                                                         {item.mediaContent && <img src={item.mediaContent} alt={item.title} />}
                                                                     </div>
                                                                     <div className="whates-caption whates-caption2">
-                                                                        <h4><a href="#">{item.title}</a></h4>
+                                                                        <h4>
+                                                                            <Link
+                                                                                to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                data-animation="fadeInUp"
+                                                                                data-delay=".4s"
+                                                                                data-duration="1000ms"
+                                                                            >
+                                                                                {item.title}
+                                                                            </Link>
+                                                                        </h4>
                                                                         <span>{item.pubDate}</span>
                                                                         <p>{item.description}</p>
                                                                     </div>
@@ -1024,7 +1097,14 @@ const Home = () => {
                                                         )}
                                                     </span>
                                                     <h4>
-                                                        <a href="latest_news.html">{item.title}</a>
+                                                        <Link
+                                                            to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                            data-animation="fadeInUp"
+                                                            data-delay=".4s"
+                                                            data-duration="1000ms"
+                                                        >
+                                                            {item.title}
+                                                        </Link>
                                                     </h4>
                                                     <p>{item.pubDate}</p>
                                                 </div>

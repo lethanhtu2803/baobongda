@@ -1,17 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { extractImageUrl } from '../../helper/RSSImage';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from "react";
+import { extractImageUrl } from "../../helper/RSSImage";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { Toast } from 'primereact/toast';
+
+
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
-const Latest = () => {
-    const [rssItems, setRssItems] = useState([]);
+const Blog = () => {
+  const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const itemsPerPage = 5; // mỗi trang có 5 bài
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [isSaved, setIsSaved] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const toast = useRef(null);
 
@@ -19,8 +22,7 @@ const Latest = () => {
     toast.current.show({ severity: 'success', summary: 'Thông báo', detail: 'Lưu bài viết thành công' });
   };
 
-
-  const FetchDataFromRssFeed = async () => {
+  const fetchDataFromRssFeed = async () => {
     try {
       const response = await fetch(
         `${CORS_PROXY}https://bongda24h.vn/RSS/187.rss`
@@ -31,36 +33,36 @@ const Latest = () => {
       const text = await response.text();
       const parser = new DOMParser();
       const xml = parser.parseFromString(text, "text/xml");
-      console.log(xml);
       const items = Array.from(xml.querySelectorAll("item"));
       const parsedItems = items.map((item) => {
-        const titleCData = item.getElementsByTagName('title')[0]?.textContent
+        const titleCData = item.getElementsByTagName("title")[0]?.textContent;
         const descriptionCData = item.querySelector("description")?.textContent;
         const url = extractImageUrl(descriptionCData);
-        console.log(descriptionCData);
         // Lấy nội dung từ CDATA
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
-        const cdataContent = descriptionCData.replace(/<[^>]+>/g, '');
-      
+        const cdataContent = descriptionCData.replace(/<[^>]+>/g, "");
+
         return {
           title: cdataTitle,
-          link: item.getElementsByTagName('link')[0]?.textContent,
+          link: item.getElementsByTagName("link")[0]?.textContent,
           description: cdataContent,
-          pubDate: item.getElementsByTagName('pubDate')[0]?.textContent,
+          pubDate: item.getElementsByTagName("pubDate")[0]?.textContent,
           mediaContent: url,
-          category: item.getElementsByTagName('category')[0]?.textContent,
+          category: item.getElementsByTagName("category")[0]?.textContent,
         };
-      });
+      }).filter((item) => item.link);
       setRssItems(parsedItems);
+      setPageCount(Math.ceil(parsedItems.length / itemsPerPage));
       setLoading(false);
-      console.log(parsedItems);
     } catch (error) {
+      window.location.reload();
       setError(error);
       setLoading(false);
     }
   };
+
   useEffect(() => {
-    FetchDataFromRssFeed();
+    fetchDataFromRssFeed();
   }, []);
 
   useEffect(() => {
@@ -131,6 +133,7 @@ const Latest = () => {
         console.error("Error submitting form:", data.status);
       }
     } catch (error) {
+      window.location.reload();
       console.error("Error submitting form:", error);
     }
   };
@@ -143,18 +146,20 @@ const Latest = () => {
   if (loading) return <div className='w-10 h-10 rounded-full border-4 border-primary border-t-0 border-t-transparent mx-auto animate-spin mb-5 mt-5'></div>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const currentItems = rssItems.slice(itemOffset, itemOffset + itemsPerPage);
-    return (
-        <div>
-            <main>
-  
-    <div class="about-area2 gray-bg pt-10 pb-60">
-        <div class="container">
-                <div class="row">
-                    <div class="col-lg-8">
-                  
-                    <div className="blog_left_sidebar">
-                {rssItems.map((item, index) => (
+  const filteredItems = rssItems.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const currentItems = filteredItems.slice(itemOffset, itemOffset + itemsPerPage);
+
+  return (
+    <div>
+      <section className="blog_area section-padding">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 mb-5 mb-lg-0">
+              <div className="blog_left_sidebar">
+                {currentItems.map((item, index) => (
                   <article className="blog_item" key={index}>
                     <div className="blog_item_img">
                       <img
@@ -221,93 +226,134 @@ const Latest = () => {
                   />
                 </nav>
               </div>
-                      
-                        {/* <div class="row">
-                            <div class="col-lg-8">
-                                <form class="form-contact contact_form mb-80" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <textarea class="form-control w-100 error" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'" placeholder="Enter Message"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <input class="form-control error" name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'" placeholder="Enter your name"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <input class="form-control error" name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" placeholder="Email"/>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <input class="form-control error" name="subject" id="subject" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Subject'" placeholder="Enter Subject"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group mt-3">
-                                        <button type="submit" class="button button-contactForm boxed-btn boxed-btn2">Send</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div> */}
+            </div>
+            <div class="col-lg-4">
+              <div class="blog_right_sidebar">
+                <aside class="single_sidebar_widget search_widget">
+                  <form action="#">
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Tìm kiếm"
+                          onfocus="this.placeholder = ''"
+                          onblur="this.placeholder = 'Search Keyword'"
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        <div class="input-group-append">
+                          <button class="btns" type="button">
+                            <i class="ti-search"></i>
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-lg-4">
+                  </form>
+                </aside>
+
+                <aside class="single_sidebar_widget post_category_widget">
+                  <h4 class="widget_title">Danh mục</h4>
+                  <ul class="list cat-list">
+                    <li>
+                      <Link to="/football-vn" class="d-flex">
+                        <p>Bóng đá Việt Nam</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-euro" class="d-flex">
+                        <p>Bóng đá Châu Âu</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-en" class="d-flex">
+                        <p>Bóng đá Anh</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-italia" class="d-flex">
+                        <p>Bóng đá Ý</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-france" class="d-flex">
+                        <p>Bóng đá Pháp</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-spanish" class="d-flex">
+                        <p>Bóng đá Tây Ban Nha</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/football-germany" class="d-flex">
+                        <p>Bóng đá Đức</p>
+                      </Link>
+                    </li>
+                  </ul>
+                </aside>
+
+                <aside class="single_sidebar_widget tag_cloud_widget">
+                  <h4 class="widget_title">Tag Clouds</h4>
+                  <ul class="list">
+                    <li>
+                      <a href="/chauau">euro</a>
+                    </li>
+                    <li>
+                      <a href="/vn">vietnam</a>
+                    </li>
+                    <li>
+                      <a href="/dtqgvn">dtqg</a>
+                    </li>
+                    <li>
+                      <a href="/c1">c1</a>
+                    </li>
+                    <li>
+                      <a href="/copa">copa</a>
+                    </li>
+                    <li>
+                      <a href="/olympic">olympic</a>
+                    </li>
+                    <li>
+                      <a href="/hotnews">bongdahomnay</a>
+                    </li>
+                    <li>
+                      <a href="/blog">nhandinh</a>
+                    </li>
+                  </ul>
+                </aside>
+
+                <aside class="single_sidebar_widget popular_post_widget">
+                <img
+                    class="img-fluid"
+                    src="assets/img/banner/banner5.jpg"
+                    alt=""
+                  />
+                </aside>
+                
+
+                <aside class="single_sidebar_widget instagram_feeds">
+                  <img
+                    class="img-fluid"
+                    src="assets/img/banner/banner1.jpg"
+                    alt=""
+                  />
                   
-                        <div class="single-follow mb-45">
-                            <div class="single-box">
-                                <div class="follow-us d-flex align-items-center">
-                                    <div class="follow-social">
-                                        <a href="#"><img src="assets/img/news/icon-fb.png" alt=""/></a>
-                                    </div>
-                                    <div class="follow-count">  
-                                        <span>8,045</span>
-                                        <p>Fans</p>
-                                    </div>
-                                </div> 
-                                <div class="follow-us d-flex align-items-center">
-                                    <div class="follow-social">
-                                        <a href="#"><img src="assets/img/news/icon-tw.png" alt=""/></a>
-                                    </div>
-                                    <div class="follow-count">
-                                        <span>8,045</span>
-                                        <p>Fans</p>
-                                    </div>
-                                </div>
-                                    <div class="follow-us d-flex align-items-center">
-                                    <div class="follow-social">
-                                        <a href="#"><img src="assets/img/news/icon-ins.png" alt=""/></a>
-                                    </div>
-                                    <div class="follow-count">
-                                        <span>8,045</span>
-                                        <p>Fans</p>
-                                    </div>
-                                </div>
-                                <div class="follow-us d-flex align-items-center">
-                                    <div class="follow-social">
-                                        <a href="#"><img src="assets/img/news/icon-yo.png" alt=""/></a>
-                                    </div>
-                                    <div class="follow-count">
-                                        <span>8,045</span>
-                                        <p>Fans</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                     
-                        <div class="news-poster d-none d-lg-block">
-                            <img src="assets/img/news/news_card.jpg" alt=""/>
-                        </div>
-                    </div>
-                </div>
+                </aside>
+
+                <aside class="single_sidebar_widget newsletter_widget">
+                  <img
+                    class="img-fluid"
+                    src="assets/img/banner/banner2.jpg"
+                    alt=""
+                  />
+                </aside>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
     </div>
-   
-</main>
-        </div>
-    );
+  );
 };
 
-export default Latest;
+export default Blog;
