@@ -15,6 +15,8 @@ const Home = () => {
     const { rssItems: rssResultNews, loading: loadingResultNews, error: errorResultNews, } = useRssFeed(333);
     const { rssItems: rssVietNamNews, loading: loadingVietNamNews, error: errorVietNamNews, } = useRssFeed(292);
     const { rssItems: rssBackstageNews, loading: loadingBackstageNews, error: errorBackstageNews, } = useRssFeed(188);
+    const { rssItems: rssEventNews, loading: loadingEventNews, error: errorEventNews, } = useRssFeed(278);
+    const { rssItems: rssEuropeNews, loading: loadingEuropeNews, error: errorEuropeNews, } = useRssFeed(290);
 
     const [value, setValue] = useState('');
     const [filteredTitles, setFilteredTitles] = useState([]);
@@ -37,7 +39,9 @@ const Home = () => {
                     ...rssC1News,
                     ...rssResultNews,
                     ...rssVietNamNews,
-                    ...rssBackstageNews
+                    ...rssBackstageNews,
+                    ...rssEventNews,
+                    ...rssEuropeNews
                 ];
 
                 _filteredTitles = allRssItems.filter((item) => {
@@ -59,13 +63,15 @@ const Home = () => {
             ...rssC1News,
             ...rssResultNews,
             ...rssVietNamNews,
-            ...rssBackstageNews
+            ...rssBackstageNews,
+            ...rssEventNews,
+            ...rssEuropeNews
         ];
 
         const extractedTitles = allRssItems.map(item => item.title);
         
         setTitles(Array.from(new Set(extractedTitles)));
-    }, [rssItems, rssHotNews, rssTransferNews, rssScheduleNews, rssVLeagueNews, rssC1News, rssResultNews, rssVietNamNews, rssBackstageNews]);
+    }, [rssItems, rssHotNews, rssTransferNews, rssScheduleNews, rssVLeagueNews, rssC1News, rssResultNews, rssVietNamNews, rssBackstageNews, rssEventNews,rssEuropeNews]);
     
 
 
@@ -76,7 +82,7 @@ const Home = () => {
         loadingTransferNews ||
         loadingScheduleNews ||
         loadingVLeagueNews ||
-        loadingC1News || loadingResultNews || loadingVietNamNews || loadingBackstageNews
+        loadingC1News || loadingResultNews || loadingVietNamNews || loadingBackstageNews || loadingEventNews || loadingEuropeNews
     ) {
         return (
             <div className="w-10 h-10 rounded-full border-4 border-primary border-t-0 border-t-transparent mx-auto animate-spin mb-5 mt-5"></div>
@@ -89,7 +95,7 @@ const Home = () => {
         errorHotNews &&
         errorScheduleNews &&
         errorVLeagueNews &&
-        errorC1News && errorResultNews && errorVietNamNews && errorBackstageNews
+        errorC1News && errorResultNews && errorVietNamNews && errorBackstageNews && errorEventNews && errorEuropeNews
     ) {
         window.location.reload();
         return <div>Error: </div>;
@@ -365,6 +371,9 @@ const Home = () => {
                                                                         </div>
                                                                     </div>
                                                                 ))}
+                                                                <button className="btn btn-outline-secondary rounded-pill" style={{transform: "translateX(-110px)", borderRadius: "12px"}}>
+                                                                    <Link to="/popular">Xem thêm tin nổi bật</Link>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -441,6 +450,9 @@ const Home = () => {
                                                                         </div>
                                                                     </div>
                                                                 ))}
+                                                                <button className="btn btn-outline-secondary rounded-pill" style={{transform: "translateX(-110px)", borderRadius: "12px"}}>
+                                                                    <Link to="/hotnews">Xem thêm tin nóng</Link>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -462,7 +474,7 @@ const Home = () => {
                                                                                 {item.mediaContent && (
                                                                                     <img
                                                                                         src={item.mediaContent}
-                                                                                        alt={item.title}
+                                                                                        alt={item.title}                                                                       
                                                                                     />
                                                                                 )}
                                                                             </div>
@@ -518,6 +530,9 @@ const Home = () => {
                                                                             </div>
                                                                         </div>
                                                                     ))}
+                                                                    <button className="btn btn-outline-secondary rounded-pill" style={{transform: "translateX(-110px)", borderRadius: "12px"}}>
+                                                                        <Link to="/latest">Xem thêm tin chuyển nhượng</Link>
+                                                                    </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -595,6 +610,9 @@ const Home = () => {
                                                                             </div>
                                                                         </div>
                                                                     ))}
+                                                                    <button className="btn btn-outline-secondary rounded-pill" style={{transform: "translateX(-110px)", borderRadius: "12px"}}>
+                                                                        <Link to="/schedule">Xem thêm lịch thi đấu</Link>
+                                                                    </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -673,6 +691,9 @@ const Home = () => {
                                                                             </div>
                                                                         </div>
                                                                     ))}
+                                                                    <button className="btn btn-outline-secondary rounded-pill" style={{transform: "translateX(-110px)", borderRadius: "12px"}}>
+                                                                        <Link to="/v-league">Xem thêm tin về V-League</Link>
+                                                                    </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -783,8 +804,8 @@ const Home = () => {
                                     <div className="slider-wrapper">
                                         <div className="row">
                                             <div className="col-lg-12">
-                                                <div className="small-tittle mb-30">
-                                                    <h4>Cúp C1</h4>
+                                                <div className="section-tittle mb-30">
+                                                    <h3 className="px-3">Cúp C1</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -839,26 +860,26 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div class="recent-articles pt-10">
-                    <div class="container mx-auto">
-                        <div class="recent-wrapper">
-                            <div class="flex justify-center">
-                                <div class="w-full">
-                                    <div class="section-title mb-8">
-                                        <h3 class="text-center text-2xl font-bold">
+                <div className="recent-articles pt-10">
+                    <div className="container mx-auto">
+                        <div className="recent-wrapper">
+                            <div className="flex justify-center">
+                                <div className="w-full">
+                                    <div className="section-tittle mb-30">
+                                        <h3 className="px-3">
                                             Kết quả các trận đấu
                                         </h3>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex justify-center">
-                                <div class="w-full">
-                                    <div class="recent-active flex space-x-4">
+                            <div className="flex justify-center">
+                                <div className="w-full">
+                                    <div className="recent-active flex space-x-4">
                                         <Swiper grabCursor={"true"} spaceBetween={40} slidesPerView={3}>
                                             {rssResultNews && rssResultNews.map((item) => (
                                                 <SwiperSlide>
-                                                    <div class="single-recent h-60">
-                                                        <div class="what-img">
+                                                    <div className="single-recent h-60">
+                                                        <div className="what-img">
                                                             {item.mediaContent && (
                                                                 <img
                                                                     src={item.mediaContent}
@@ -867,8 +888,8 @@ const Home = () => {
                                                                 />
                                                             )}
                                                         </div>
-                                                        <div class="what-cap mt-4">
-                                                            <h4 class="text-sm font-medium">
+                                                        <div className="what-cap mt-4">
+                                                            <h4 className="text-sm font-medium">
                                                                 <Link
                                                                     to={`/news-details/${encodeURIComponent(item.link)}`}
                                                                     data-animation="fadeInUp"
@@ -878,7 +899,7 @@ const Home = () => {
                                                                     {item.title}
                                                                 </Link>
                                                             </h4>
-                                                            <p class="text-sm text-gray-500">{item.pubDate}</p>
+                                                            <p className="text-sm text-gray-500">{item.pubDate}</p>
                                                             {/* <a
                                                                 class="popup-video btn-icon"
                                                                 href="https://www.youtube.com/watch?v=1aP-TXUpNoU"
@@ -1027,7 +1048,7 @@ const Home = () => {
                                     <div class="row justify-content-between align-items-end mb-15">
                                         <div class="col-xl-6">
                                             <div class="section-tittle mb-30">
-                                                <h3>Đội tuyển Việt Nam</h3>
+                                                <h3 className="px-3">Đội tuyển Việt Nam</h3>
                                             </div>
                                         </div>
 
@@ -1044,7 +1065,7 @@ const Home = () => {
                                                             <div className="col-xl-6 col-lg-6 col-md-6">
                                                                 <div className="whats-news-single mb-40">
                                                                     <div className="whates-img">
-                                                                        {item.mediaContent && <img src={item.mediaContent} alt={item.title} />}
+                                                                        {item.mediaContent && <img src={item.mediaContent} alt={item.title} style={{height: "212px"}}/>}
                                                                     </div>
                                                                     <div className="whates-caption whates-caption2">
                                                                         <h4>
@@ -1118,12 +1139,150 @@ const Home = () => {
                 </div>
 
 
+                <div className="banner-area gray-bg pt-90 pb-30">
+                    <div className="container">
+                        <div className="row justify-content-center">
+                            <div className="col-lg-10 col-md-10">
+                                <div className="banner-one">
+                                <img src="assets/img/banner/banner7.jpg" alt="" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="weekly2-news-area pt-10 pb-30 gray-bg">
+                    <div className="container">
+                        <div className="weekly2-wrapper">
+                            <div className="row">
+                                <div className="col-lg-12">
+                                    <div className="slider-wrapper">
+                                        <div className="row">
+                                            <div className="col-lg-12">
+                                                <div className="section-tittle mb-30">
+                                                    <h3 className="px-3">Sự kiện - Bình luận</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <div className="weekly2-news">
+                                                    <Swiper
+                                                        grabCursor={true}
+                                                        spaceBetween={40}
+                                                        slidesPerView={3}
+                                                    >
+                                                        {rssEventNews &&
+                                                            rssEventNews.map((item) => (
+                                                                <SwiperSlide>
+                                                                    <div className="weekly2-single rounded-lg shadow-md h-auto">
+                                                                        <div className="weekly2-img">
+                                                                            {item.mediaContent && (
+                                                                                <img
+                                                                                    src={item.mediaContent}
+                                                                                    alt={item.title}
+                                                                                    className="rounded-t-lg w-full h-48 object-cover"
+                                                                                />
+                                                                            )}
+                                                                        </div>
+                                                                        <div className="weekly2-caption p-4">
+                                                                            <h4 className="text-lg font-bold mb-2">
+                                                                                <Link
+                                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                    data-animation="fadeInUp"
+                                                                                    data-delay=".4s"
+                                                                                    data-duration="1000ms"
+                                                                                >
+                                                                                    {item.title}
+                                                                                </Link>
+                                                                            </h4>
+                                                                            <p className="text-gray-500 text-sm">
+                                                                                {item.pubDate}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </SwiperSlide>
+                                                            ))}
+                                                    </Swiper>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="weekly2-news-area pt-10 pb-30 gray-bg">
+                    <div className="container">
+                        <div className="weekly2-wrapper">
+                            <div className="row">
+                                <div className="col-lg-12">
+                                    <div className="slider-wrapper">
+                                        <div className="row">
+                                            <div className="col-lg-12">
+                                                <div className="section-tittle mb-30">
+                                                    <h3 className="px-3">Tin Quốc tế</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-12">
+                                                <div className="weekly2-news">
+                                                    <Swiper
+                                                        grabCursor={true}
+                                                        spaceBetween={40}
+                                                        slidesPerView={3}
+                                                    >
+                                                        {rssEuropeNews &&
+                                                            rssEuropeNews.map((item) => (
+                                                                <SwiperSlide>
+                                                                    <div className="weekly2-single rounded-lg shadow-md h-auto">
+                                                                        <div className="weekly2-img">
+                                                                            {item.mediaContent && (
+                                                                                <img
+                                                                                    src={item.mediaContent}
+                                                                                    alt={item.title}
+                                                                                    className="rounded-t-lg w-full h-48 object-cover"
+                                                                                />
+                                                                            )}
+                                                                        </div>
+                                                                        <div className="weekly2-caption p-4">
+                                                                            <h4 className="text-lg font-bold mb-2">
+                                                                                <Link
+                                                                                    to={`/news-details/${encodeURIComponent(item.link)}`}
+                                                                                    data-animation="fadeInUp"
+                                                                                    data-delay=".4s"
+                                                                                    data-duration="1000ms"
+                                                                                >
+                                                                                    {item.title}
+                                                                                </Link>
+                                                                            </h4>
+                                                                            <p className="text-gray-500 text-sm">
+                                                                                {item.pubDate}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </SwiperSlide>
+                                                            ))}
+                                                    </Swiper>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="banner-area gray-bg pt-90 pb-90">
                     <div className="container">
                         <div className="row justify-content-center">
                             <div className="col-lg-10 col-md-10">
                                 <div className="banner-one">
-                                    <img src="assets/img/gallery/body_card3.png" alt="" />
+                                    <img src="assets/img/banner/banner6.jpg" alt="" />
                                 </div>
                             </div>
                         </div>

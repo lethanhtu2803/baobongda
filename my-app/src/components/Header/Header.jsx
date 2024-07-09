@@ -50,7 +50,7 @@ const Header = () => {
                   <div className="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
                     <div className="logo">
                       <a href="/">
-                        <img src="assets/img/logo/logo.png" alt="" />
+                      <img style={{height: 90}} src="assets/img/logo/logo1.jpg" alt="" />
                       </a>
                     </div>
                   </div>

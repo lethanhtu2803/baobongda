@@ -14,7 +14,7 @@ const Footer = () => {
                             <div class="single-footer-caption mb-30">
                       
                                 <div class="footer-logo">
-                                    <a href="/"><img src="assets/img/logo/logo2_footer.png" alt=""/></a>
+                                <a href="/"><img style={{height: 200, width:500}} src="assets/img/logo/logo3.png" alt=""/></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">

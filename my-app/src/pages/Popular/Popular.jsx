@@ -6,7 +6,7 @@ import { Toast } from 'primereact/toast';
 
 
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
-const HotNews = () => {
+const Popular = () => {
   const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,7 +25,7 @@ const HotNews = () => {
   const fetchDataFromRssFeed = async () => {
     try {
       const response = await fetch(
-        `${CORS_PROXY}https://bongda24h.vn/RSS/279.rss`
+        `${CORS_PROXY}https://bongda24h.vn/RSS/1.rss`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -159,6 +159,9 @@ const HotNews = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-8 mb-5 mb-lg-0">
+            <div className="section-tittle mb-30 -mt-[4.25rem]">
+                <h3>Tin nổi bật</h3>
+            </div>
               <div className="blog_left_sidebar">
                 {currentItems.map((item, index) => (
                   <article className="blog_item" key={index}>
@@ -185,7 +188,7 @@ const HotNews = () => {
                       <p>{item.description}</p>
                       <ul className="blog-info-link">
                         <li>
-                          <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                          <a to={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
                             <i className="fa-solid fa-share-from-square"></i> Facebook
                           </a>
                         </li>
@@ -228,23 +231,23 @@ const HotNews = () => {
                 </nav>
               </div>
             </div>
-            <div class="col-lg-4">
-              <div class="blog_right_sidebar">
-                <aside class="single_sidebar_widget search_widget">
+            <div className="col-lg-4">
+              <div className="blog_right_sidebar">
+                <aside className="single_sidebar_widget search_widget">
                   <form action="#">
-                    <div class="form-group">
-                      <div class="input-group mb-3">
+                    <div className="form-group">
+                      <div className="input-group mb-3">
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           placeholder="Tìm kiếm"
                           onfocus="this.placeholder = ''"
                           onblur="this.placeholder = 'Search Keyword'"
                           onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <div class="input-group-append">
-                          <button class="btns" type="button">
-                            <i class="ti-search"></i>
+                        <div className="input-group-append">
+                          <button className="btns" type="button">
+                            <i className="ti-search"></i>
                           </button>
                         </div>
                       </div>
@@ -252,73 +255,73 @@ const HotNews = () => {
                   </form>
                 </aside>
 
-                <aside class="single_sidebar_widget post_category_widget">
-                  <h4 class="widget_title">Danh mục</h4>
-                  <ul class="list cat-list">
+                <aside className="single_sidebar_widget post_category_widget">
+                  <h4 className="widget_title">Danh mục</h4>
+                  <ul className="list cat-list">
                     <li>
-                      <Link to="/football-vn" class="d-flex">
+                      <Link to="/football-vn" className="d-flex">
                         <p>Bóng đá Việt Nam</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/football-euro" class="d-flex">
+                      <Link to="/football-euro" className="d-flex">
                         <p>Bóng đá Châu Âu</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/football-en" class="d-flex">
+                      <Link to="/football-en" className="d-flex">
                         <p>Bóng đá Anh</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/football-italia" class="d-flex">
+                      <Link to="/football-italia" className="d-flex">
                         <p>Bóng đá Ý</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/football-france" class="d-flex">
+                      <Link to="/football-france" className="d-flex">
                         <p>Bóng đá Pháp</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/football-spanish" class="d-flex">
+                      <Link to="/football-spanish" className="d-flex">
                         <p>Bóng đá Tây Ban Nha</p>
                       </Link>
                     </li>
                     <li>
-                      <Link to="/football-germany" class="d-flex">
+                      <Link to="/football-germany" className="d-flex">
                         <p>Bóng đá Đức</p>
                       </Link>
                     </li>
                   </ul>
                 </aside>
 
-                <aside class="single_sidebar_widget tag_cloud_widget">
-                  <h4 class="widget_title">Tag Clouds</h4>
-                  <ul class="list">
+                <aside className="single_sidebar_widget tag_cloud_widget">
+                  <h4 className="widget_title">Tag Clouds</h4>
+                  <ul className="list">
                     <li>
-                      <a href="/chauau">euro</a>
+                      <Link to="/chauau">euro</Link>
                     </li>
                     <li>
-                      <a href="/vn">vietnam</a>
+                      <Link to="/vn">vietnam</Link>
                     </li>
                     <li>
-                      <a href="/dtqgvn">dtqg</a>
+                      <Link to="/dtqgvn">dtqg</Link>
                     </li>
                     <li>
-                      <a href="/c1">c1</a>
+                      <Link to="/c1">c1</Link>
                     </li>
                     <li>
-                      <a href="/copa">copa</a>
+                      <Link to="/copa">copa</Link>
                     </li>
                     <li>
-                      <a href="/olympic">olympic</a>
+                      <Link to="/olympic">olympic</Link>
                     </li>
                     <li>
-                      <a href="/hotnews">bongdahomnay</a>
+                      <Link to="/hotnews">bongdahomnay</Link>
                     </li>
                     <li>
-                      <a href="/blog">nhandinh</a>
+                      <Link to="/blog">nhandinh</Link>
                     </li>
                   </ul>
                 </aside>
@@ -326,53 +329,53 @@ const HotNews = () => {
                   <h4 class="widget_title">Tag Clouds</h4>
                   <ul class="list">
                     <li>
-                      <a href="/chauau">euro</a>
+                      <Link to="/chauau">euro</Link>
                     </li>
                     <li>
-                      <a href="/vn">vietnam</a>
+                      <Link to="/vn">vietnam</Link>
                     </li>
                     <li>
-                      <a href="/dtqgvn">dtqg</a>
+                      <Link to="/dtqgvn">dtqg</Link>
                     </li>
                     <li>
-                      <a href="/c1">c1</a>
+                      <Link to="/c1">c1</Link>
                     </li>
                     <li>
-                      <a href="/copa">copa</a>
+                      <Link to="/copa">copa</Link>
                     </li>
                     <li>
-                      <a href="/olympic">olympic</a>
+                      <Link to="/olympic">olympic</Link>
                     </li>
                     <li>
-                      <a href="/hotnews">bongdahomnay</a>
+                      <Link to="/hotnews">bongdahomnay</Link>
                     </li>
                     <li>
-                      <a href="/blog">nhandinh</a>
+                      <Link to="/blog">nhandinh</Link>
                     </li>
                   </ul>
                 </aside>
 
-                <aside class="single_sidebar_widget popular_post_widget">
+                <aside className="single_sidebar_widget popular_post_widget">
                 <img
-                    class="img-fluid"
+                    className="img-fluid"
                     src="assets/img/banner/banner5.jpg"
                     alt=""
                   />
                 </aside>
                 
 
-                <aside class="single_sidebar_widget instagram_feeds">
+                <aside className="single_sidebar_widget instagram_feeds">
                   <img
-                    class="img-fluid"
+                    className="img-fluid"
                     src="assets/img/banner/banner1.jpg"
                     alt=""
                   />
                   
                 </aside>
 
-                <aside class="single_sidebar_widget newsletter_widget">
+                <aside className="single_sidebar_widget newsletter_widget">
                   <img
-                    class="img-fluid"
+                    className="img-fluid"
                     src="assets/img/banner/banner2.jpg"
                     alt=""
                   />
@@ -386,4 +389,4 @@ const HotNews = () => {
   );
 };
 
-export default HotNews;
+export default Popular;
