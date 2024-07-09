@@ -6,7 +6,7 @@ import { Toast } from 'primereact/toast';
 
 
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
-const Blog = () => {
+const Latest = () => {
   const [rssItems, setRssItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,10 +41,11 @@ const Blog = () => {
         // Lấy nội dung từ CDATA
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
         const cdataContent = descriptionCData.replace(/<[^>]+>/g, "");
-
+        const link1 = item.getElementsByTagName("link")[0]?.textContent;
+        const startIndex = link1.indexOf("/", link1.indexOf("/") + 4);
         return {
           title: cdataTitle,
-          link: item.getElementsByTagName("link")[0]?.textContent,
+          link: link1.substring(startIndex),
           description: cdataContent,
           pubDate: item.getElementsByTagName("pubDate")[0]?.textContent,
           mediaContent: url,
@@ -167,20 +168,20 @@ const Blog = () => {
                         src={item.mediaContent}
                         alt=""
                       />
-                      <a href="#" className="blog_item_date">
+                      <Link to={`/news-details/${encodeURIComponent(item.link)}`} className="blog_item_date">
                         <h3>{new Date(item.pubDate).getDate()}</h3>
                         <p>
                           {new Date(item.pubDate).toLocaleString("default", {
                             month: "short",
                           })}
                         </p>
-                      </a>
+                      </Link>
                     </div>
 
                     <div className="blog_details">
-                      <a className="d-inline-block" href={item.link}>
+                      <Link className="d-inline-block" to={`/news-details/${encodeURIComponent(item.link)}`}>
                         <h2>{item.title}</h2>
-                      </a>
+                      </Link>
                       <p>{item.description}</p>
                       <ul className="blog-info-link">
                         <li>
@@ -356,4 +357,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default Latest;

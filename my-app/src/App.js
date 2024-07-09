@@ -86,6 +86,9 @@ import FootballEU from './components/football-eu/FootballEU';
 import C2 from './components/football-eu/C2';
 import C3 from './components/football-eu/C3';
 import NationsLeague from './components/football-eu/NationsLeague';
+import Popular from './pages/Popular/Popular';
+import Schedule from './pages/Schedule/Schedule';
+import Vleague from './pages/VLeague/Vleague';
 
 const Layout = () => {
   return (
@@ -179,8 +182,20 @@ const router = createBrowserRouter([
         element: <Latest></Latest>
       },
       {
+        path: '/schedule',
+        element: <Schedule></Schedule>
+      },
+      {
         path: '/hotnews',
         element: <HotNews></HotNews>
+      },
+      {
+        path: '/popular',
+        element: <Popular></Popular>
+      },
+      {
+        path: '/v-league',
+        element: <Vleague></Vleague>
       },
       {
         path: '/news-details/:articleId',
