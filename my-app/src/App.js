@@ -89,6 +89,8 @@ import NationsLeague from './components/football-eu/NationsLeague';
 import Popular from './pages/Popular/Popular';
 import Schedule from './pages/Schedule/Schedule';
 import Vleague from './pages/VLeague/Vleague';
+import ForgetPassword from './components/Login/ForgetPassword';
+import ResetPassword from './components/Login/ResetPassword';
 
 const Layout = () => {
   return (
@@ -208,6 +210,10 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login></Login>
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgetPassword></ForgetPassword>
       },
       {
         path: '/register',

@@ -185,7 +185,7 @@ const HotNews = () => {
                       <p>{item.description}</p>
                       <ul className="blog-info-link">
                         <li>
-                          <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                          <a href={`https://www.facebook.com/sharer/sharer.php?u=https://bongda24h.vn/${item.link}`} target="_blank">
                             <i className="fa-solid fa-share-from-square"></i> Facebook
                           </a>
                         </li>
@@ -293,35 +293,6 @@ const HotNews = () => {
                   </ul>
                 </aside>
 
-                <aside class="single_sidebar_widget tag_cloud_widget">
-                  <h4 class="widget_title">Tag Clouds</h4>
-                  <ul class="list">
-                    <li>
-                      <a href="/chauau">euro</a>
-                    </li>
-                    <li>
-                      <a href="/vn">vietnam</a>
-                    </li>
-                    <li>
-                      <a href="/dtqgvn">dtqg</a>
-                    </li>
-                    <li>
-                      <a href="/c1">c1</a>
-                    </li>
-                    <li>
-                      <a href="/copa">copa</a>
-                    </li>
-                    <li>
-                      <a href="/olympic">olympic</a>
-                    </li>
-                    <li>
-                      <a href="/hotnews">bongdahomnay</a>
-                    </li>
-                    <li>
-                      <a href="/blog">nhandinh</a>
-                    </li>
-                  </ul>
-                </aside>
                 <aside class="single_sidebar_widget tag_cloud_widget">
                   <h4 class="widget_title">Tag Clouds</h4>
                   <ul class="list">
