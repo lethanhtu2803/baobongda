@@ -188,7 +188,7 @@ const Popular = () => {
                       <p>{item.description}</p>
                       <ul className="blog-info-link">
                         <li>
-                          <a to={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                          <a to={`https://www.facebook.com/sharer/sharer.php?https://bongda24h.vn/u=${item.link}`} target="_blank">
                             <i className="fa-solid fa-share-from-square"></i> Facebook
                           </a>
                         </li>

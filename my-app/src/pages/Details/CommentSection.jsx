@@ -87,10 +87,10 @@ const CommentSection = ({ linkNews }) => {
                     setComments(newCommentList);
                     setNewComment('');
                 } else {
-                    console.error("Error submitting comment:", response.status);
+                    console.error("Lỗi submit comment:", response.status);
                 }
             } catch (error) {
-                console.error("Error submitting comment:", error);
+                console.error("Lỗi submit comment:", error);
             }
         } else {
             alert("Bạn cần có tài khoản để bình luận bài viết");

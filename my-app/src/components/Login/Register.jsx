@@ -34,7 +34,6 @@ const Register = () => {
       return;
     }
     setErrorMessage('');
-    // Perform your registration logic here with formData
     try {
       const response = await fetch("http://localhost:8087/api/account/create", {
         method: "POST",
@@ -54,10 +53,10 @@ const Register = () => {
           JSON.stringify({fullName: account.fullName, username: account.username, password: account.password, email: account.email, created: account.created})
         );
       } else {
-        console.error("Error submitting form:", data.status);
+        console.error("Lỗi submit:", data.status);
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Lỗi submit:", error);
     }
     // Reset form fields
     setFormData({
