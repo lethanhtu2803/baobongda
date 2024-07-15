@@ -46,6 +46,7 @@ export const useRssFeed = (type) => {
           link: link1.substring(startIndex),
           description: cdataContent,
           pubDate: timeSincePost,
+          pubDateNoFormat: item.getElementsByTagName("pubDate")[0]?.textContent,
           mediaContent: url,
           category: item.getElementsByTagName("category")[0]?.textContent,
           atomLink: atomLinkHref 
