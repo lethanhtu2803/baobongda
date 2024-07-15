@@ -30,6 +30,7 @@ const CommentSection = ({ linkNews }) => {
                     throw new Error("Network response was not ok");
                 }
                 const text = await response.text();
+                console.log(text);
                 const $ = cheerio.load(text);
                 const title = $('head > title').text();
                 const imageUrl = $('meta[property="og:image"]').attr('content');

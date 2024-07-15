@@ -51,12 +51,12 @@ const FootballENG = () => {
       localStorage.setItem('savedStatus', JSON.stringify(updatedState));
       return;
     }
-
+    console.log(item);
     const news = {
       accountUsername: currentUser.username,
       link: item.link,
       description: item.description,
-      pubDate: new Date(item.pubDate),
+      pubDate: new Date(item.pubDateNoFormat),
       image: item.mediaContent,
       created: new Date(),
       title: item.title,
