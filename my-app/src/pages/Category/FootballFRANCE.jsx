@@ -151,7 +151,7 @@ const FootballENG = () => {
                                                     </div>
                                                     <ul className="blog-info-link mt-3">
                                                             <li>
-                                                            <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                                                            <a href={`https://www.facebook.com/sharer/sharer.php?u=https://bongda24h.vn/${item.link}`} target="_blank">
                                                                 <i className="fa-solid fa-share-from-square"></i> Facebook
                                                             </a>
                                                             </li>

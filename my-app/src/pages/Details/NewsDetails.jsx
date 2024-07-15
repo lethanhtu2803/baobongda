@@ -95,7 +95,7 @@ const NewsDetails = () => {
                 `;
                 
                 setContent(fullContent);
-                setError(null); // Clear any previous errors
+                setError(null); 
             } catch (error) {
                 console.error('Failed to fetch content', error);
                 setError(error.message);
@@ -129,10 +129,9 @@ const NewsDetails = () => {
             }
         };
 
-        // Listen for resize messages from iframe
+
         window.addEventListener('message', handleResize);
 
-        // Listen for link click messages from iframe
         window.addEventListener('message', handleLinkClick);
 
         return () => {

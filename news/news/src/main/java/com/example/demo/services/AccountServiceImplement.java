@@ -42,6 +42,11 @@ public class AccountServiceImplement implements AccountService{
 		return mapper.map(accountRepository.findbyUsername(username), new AccountDTO().getClass());
 	}
 	@Override
+	public AccountDTO findByEmail(String email) {
+		// TODO Auto-generated method stub
+		return mapper.map(accountRepository.findbyEmail(email), new AccountDTO().getClass());
+	}
+	@Override
 	public Account findByID(int id) {
 		return accountRepository.findById(id).get();
 	}

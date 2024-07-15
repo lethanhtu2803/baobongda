@@ -54,6 +54,7 @@ export const useRssFeed = (type) => {
       setRssItems(parsedItems);
       setLoading(false);
     } catch (error) {
+      window.location.reload();
       setError(error);
       setLoading(false);
     }

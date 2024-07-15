@@ -49,14 +49,14 @@ const Header = () => {
                 <div className="row d-flex align-items-center">
                   <div className="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
                     <div className="logo">
-                      <a href="/">
-                      <img style={{height: 90}} src="assets/img/logo/logo1.jpg" alt="" />
-                      </a>
+                      <Link to="/">
+                      <img style={{height: 90}} src="/assets/img/logo/logo1.jpg" alt="" />
+                      </Link>
                     </div>
                   </div>
                   <div className="col-xl-9 col-lg-9 col-md-9">
                     <div className="header-banner f-right ">
-                      <img src="assets/img/banner/banner3.jpg" alt="" />
+                      <img src="/assets/img/banner/banner3.jpg" alt="" />
                     </div>
                   </div>
                 </div>
@@ -67,9 +67,9 @@ const Header = () => {
                 <div className="row align-items-center">
                   <div className="col-xl-11 col-lg-11 col-md-11 header-flex">
                     <div className="sticky-logo">
-                      <a href="index.html">
-                        <img src="assets/img/logo/logo.png" alt="" />
-                      </a>
+                      <Link to="/">
+                        <img src="/assets/img/logo/logo.png" alt="" />
+                      </Link>
                     </div>
 
                     <div className="main-menu d-none d-md-block">

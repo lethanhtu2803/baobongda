@@ -21,6 +21,7 @@ const Home = () => {
     const [value, setValue] = useState('');
     const [filteredTitles, setFilteredTitles] = useState([]);
     const [titles, setTitles] = useState([]);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const search = (event) => {
         // Timeout to emulate a network connection

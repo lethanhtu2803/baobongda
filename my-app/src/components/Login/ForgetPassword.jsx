@@ -37,6 +37,7 @@ const ForgetPassword = () => {
         console.error("Error submitting form:", data.status);
       }
     } catch (error) {
+      alert("Email này chưa từng đăng kí tài khoản");
       console.error("Error submitting form:", error);
     }
   };

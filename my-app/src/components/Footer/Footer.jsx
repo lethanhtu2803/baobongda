@@ -14,7 +14,7 @@ const Footer = () => {
                             <div class="single-footer-caption mb-30">
                       
                                 <div class="footer-logo">
-                                <a href="/"><img style={{height: 200, width:500}} src="assets/img/logo/logo3.png" alt=""/></a>
+                                <a href="/"><img style={{height: 200, width:500}} src="/assets/img/logo/logo3.png" alt=""/></a>
                                 </div>
                                 <div class="footer-tittle">
                                     <div class="footer-pera">
@@ -68,7 +68,7 @@ const Footer = () => {
                     <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
                         <div class="single-footer-caption mb-50">
                             <div class="banner">
-                                <img src="assets/img/banner/banner4.jpg" alt=""/>
+                                <img src="/assets/img/banner/banner4.jpg" alt=""/>
                             </div>
                         </div>
                     </div>
