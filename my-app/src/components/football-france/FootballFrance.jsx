@@ -90,7 +90,7 @@ const FootballFrance = () => {
                 `;
 
                 setContent(fullContent);
-                setError(null); // Clear any previous errors
+                setError(null); 
             } catch (error) {
                 console.error('Failed to fetch content', error);
                 setError(error.message);

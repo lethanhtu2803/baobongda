@@ -86,6 +86,11 @@ import FootballEU from './components/football-eu/FootballEU';
 import C2 from './components/football-eu/C2';
 import C3 from './components/football-eu/C3';
 import NationsLeague from './components/football-eu/NationsLeague';
+import Popular from './pages/Popular/Popular';
+import Schedule from './pages/Schedule/Schedule';
+import Vleague from './pages/VLeague/Vleague';
+import ForgetPassword from './components/Login/ForgetPassword';
+import ResetPassword from './components/Login/ResetPassword';
 
 const Layout = () => {
   return (
@@ -179,8 +184,20 @@ const router = createBrowserRouter([
         element: <Latest></Latest>
       },
       {
+        path: '/schedule',
+        element: <Schedule></Schedule>
+      },
+      {
         path: '/hotnews',
         element: <HotNews></HotNews>
+      },
+      {
+        path: '/popular',
+        element: <Popular></Popular>
+      },
+      {
+        path: '/v-league',
+        element: <Vleague></Vleague>
       },
       {
         path: '/news-details/:articleId',
@@ -195,6 +212,10 @@ const router = createBrowserRouter([
         element: <Login></Login>
       },
       {
+        path: '/forgot-password',
+        element: <ForgetPassword></ForgetPassword>
+      },
+      {
         path: '/register',
         element: <Register></Register>
       },
@@ -204,7 +225,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/english',
-        element: <FootballEnglish></FootballEnglish>
+        element: <FootballENG></FootballENG>
       },
       {
         path: '/save-news',
@@ -240,7 +261,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/spain',
-        element: <FootballSpain></FootballSpain>
+        element: <FootballSPAIN></FootballSPAIN>
       },
       {
         path: '/laliga',
@@ -264,7 +285,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/france',
-        element: <FootballFrance></FootballFrance>
+        element: <FootballFRANCE></FootballFRANCE>
       },
       {
         path: '/league1',
@@ -288,7 +309,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/germany',
-        element: <FootballGermany></FootballGermany>
+        element: <FootballGER></FootballGER>
       },
       {
         path: '/bundes',
@@ -312,7 +333,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/italy',
-        element: <FootballItaly></FootballItaly>
+        element: <FootballITALIA></FootballITALIA>
       },
       {
         path: '/seria',
@@ -336,7 +357,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/vn',
-        element: <FootballVietNam></FootballVietNam>
+        element: <FootballVN></FootballVN>
       },
       {
         path: '/vleague',
@@ -396,7 +417,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/chauau',
-        element: <FootballEU></FootballEU>
+        element: <FootballEURO></FootballEURO>
       },
       {
         path: '/c1',

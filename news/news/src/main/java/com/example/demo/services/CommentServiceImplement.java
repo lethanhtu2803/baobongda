@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class CommentServiceImplement implements CommentService{
 		try {
 			commentDTO.setAccountID(accountService.findByUsername(commentDTO.getAccountUsername()).getId());
 			commentDTO.setAccountFullName(accountService.findByUsername(commentDTO.getAccountUsername()).getFullName());
-			commentDTO.setCreated(new Date());
+			commentDTO.setCreated(new Timestamp(new Date().getTime()));
 			Comment comment =  mapper.map(commentDTO, Comment.class);
 			comment.setAccount(accountService.findByID(commentDTO.getAccountID()));
 			commentRepository.save(comment);

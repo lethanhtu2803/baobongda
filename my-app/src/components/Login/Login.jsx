@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -12,7 +12,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+
     try {
       const response = await fetch("http://localhost:8087/api/account/login", {
         method: "POST",
@@ -23,20 +23,20 @@ const Login = () => {
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok && data.status === true) {
         // Lưu thông tin đăng nhập vào LocalStorage
         localStorage.setItem(
           "currentUser",
           JSON.stringify({username: account.username, status: data.status})
         );
-        navigate("/blog");
+        navigate("/");
         window.location.reload();
         console.log("login thành công");
       } else {
-        console.error("Error submitting form:", data.status);
+        alert("Không tồn tại tài khoản này. Nếu chưa có xin vui lòng đăng kí tài khoản")
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Lỗi submit:", error);
     }
   };
   return (
@@ -82,6 +82,11 @@ const Login = () => {
         >
           Đăng nhập
         </button>
+        <div className="text-center mt-4">
+          <Link to="/forgot-password" className="text-blue-500 hover:underline">
+            Quên mật khẩu?
+          </Link>
+        </div>
       </form>
     </div>
   );

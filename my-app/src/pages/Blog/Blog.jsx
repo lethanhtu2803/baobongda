@@ -25,7 +25,7 @@ const Blog = () => {
   const fetchDataFromRssFeed = async () => {
     try {
       const response = await fetch(
-        `${CORS_PROXY}https://bongda24h.vn/RSS/1.rss`
+        `${CORS_PROXY}https://bongda24h.vn/RSS/344.rss`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -42,9 +42,11 @@ const Blog = () => {
         const cdataTitle = titleCData.replace(/&quot;/g, '"');
         const cdataContent = descriptionCData.replace(/<[^>]+>/g, "");
 
+        const link1 = item.getElementsByTagName("link")[0]?.textContent;
+        const startIndex = link1.indexOf("/", link1.indexOf("/") + 4);
         return {
           title: cdataTitle,
-          link: item.getElementsByTagName("link")[0]?.textContent,
+          link: link1.substring(startIndex),
           description: cdataContent,
           pubDate: item.getElementsByTagName("pubDate")[0]?.textContent,
           mediaContent: url,
@@ -166,24 +168,24 @@ const Blog = () => {
                         src={item.mediaContent}
                         alt=""
                       />
-                      <a href="#" className="blog_item_date">
+                      <Link to={`/news-details/${encodeURIComponent(item.link)}`} className="blog_item_date">
                         <h3>{new Date(item.pubDate).getDate()}</h3>
                         <p>
                           {new Date(item.pubDate).toLocaleString("default", {
                             month: "short",
                           })}
                         </p>
-                      </a>
+                      </Link>
                     </div>
 
                     <div className="blog_details">
-                      <a className="d-inline-block" href={item.link}>
+                      <Link className="d-inline-block" to={`/news-details/${encodeURIComponent(item.link)}`}>
                         <h2>{item.title}</h2>
-                      </a>
+                      </Link>
                       <p>{item.description}</p>
                       <ul className="blog-info-link">
                         <li>
-                          <a href={`https://www.facebook.com/sharer/sharer.php?u=${item.link}`} target="_blank">
+                          <a href={`https://www.facebook.com/sharer/sharer.php?https://bongda24h.vn/u=${item.link}`} target="_blank">
                             <i className="fa-solid fa-share-from-square"></i> Facebook
                           </a>
                         </li>
@@ -291,156 +293,60 @@ const Blog = () => {
                   </ul>
                 </aside>
 
-                <aside class="single_sidebar_widget popular_post_widget">
-                  <h3 class="widget_title">Recent Post</h3>
-                  <div class="media post_item">
-                    <img src="assets/img/post/post_1.png" alt="post" />
-                    <div class="media-body">
-                      <a href="single-blog.html">
-                        <h3>From life was you fish...</h3>
-                      </a>
-                      <p>January 12, 2019</p>
-                    </div>
-                  </div>
-                  <div class="media post_item">
-                    <img src="assets/img/post/post_2.png" alt="post" />
-                    <div class="media-body">
-                      <a href="single-blog.html">
-                        <h3>The Amazing Hubble</h3>
-                      </a>
-                      <p>02 Hours ago</p>
-                    </div>
-                  </div>
-                  <div class="media post_item">
-                    <img src="assets/img/post/post_3.png" alt="post" />
-                    <div class="media-body">
-                      <a href="single-blog.html">
-                        <h3>Astronomy Or Astrology</h3>
-                      </a>
-                      <p>03 Hours ago</p>
-                    </div>
-                  </div>
-                  <div class="media post_item">
-                    <img src="assets/img/post/post_4.png" alt="post" />
-                    <div class="media-body">
-                      <a href="single-blog.html">
-                        <h3>Asteroids telescope</h3>
-                      </a>
-                      <p>01 Hours ago</p>
-                    </div>
-                  </div>
-                </aside>
                 <aside class="single_sidebar_widget tag_cloud_widget">
                   <h4 class="widget_title">Tag Clouds</h4>
                   <ul class="list">
                     <li>
-                      <a href="#">project</a>
+                      <a href="/chauau">euro</a>
                     </li>
                     <li>
-                      <a href="#">love</a>
+                      <a href="/vn">vietnam</a>
                     </li>
                     <li>
-                      <a href="#">technology</a>
+                      <a href="/dtqgvn">dtqg</a>
                     </li>
                     <li>
-                      <a href="#">travel</a>
+                      <a href="/c1">c1</a>
                     </li>
                     <li>
-                      <a href="#">restaurant</a>
+                      <a href="/copa">copa</a>
                     </li>
                     <li>
-                      <a href="#">life style</a>
+                      <a href="/olympic">olympic</a>
                     </li>
                     <li>
-                      <a href="#">design</a>
+                      <a href="/hotnews">bongdahomnay</a>
                     </li>
                     <li>
-                      <a href="#">illustration</a>
+                      <a href="/blog">nhandinh</a>
                     </li>
                   </ul>
                 </aside>
 
+                <aside class="single_sidebar_widget popular_post_widget">
+                <img
+                    class="img-fluid"
+                    src="assets/img/banner/banner5.jpg"
+                    alt=""
+                  />
+                </aside>
+                
+
                 <aside class="single_sidebar_widget instagram_feeds">
-                  <h4 class="widget_title">Instagram Feeds</h4>
-                  <ul class="instagram_row flex-wrap">
-                    <li>
-                      <a href="#">
-                        <img
-                          class="img-fluid"
-                          src="assets/img/post/post_5.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          class="img-fluid"
-                          src="assets/img/post/post_6.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          class="img-fluid"
-                          src="assets/img/post/post_7.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          class="img-fluid"
-                          src="assets/img/post/post_8.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          class="img-fluid"
-                          src="assets/img/post/post_9.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <img
-                          class="img-fluid"
-                          src="assets/img/post/post_10.png"
-                          alt=""
-                        />
-                      </a>
-                    </li>
-                  </ul>
+                  <img
+                    class="img-fluid"
+                    src="assets/img/banner/banner1.jpg"
+                    alt=""
+                  />
+                  
                 </aside>
 
                 <aside class="single_sidebar_widget newsletter_widget">
-                  <h4 class="widget_title">Newsletter</h4>
-
-                  <form action="#">
-                    <div class="form-group">
-                      <input
-                        type="email"
-                        class="form-control"
-                        onfocus="this.placeholder = ''"
-                        onblur="this.placeholder = 'Enter email'"
-                        placeholder="Enter email"
-                        required
-                      />
-                    </div>
-                    <button
-                      class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                      type="submit"
-                    >
-                      Subscribe
-                    </button>
-                  </form>
+                  <img
+                    class="img-fluid"
+                    src="assets/img/banner/banner2.jpg"
+                    alt=""
+                  />
                 </aside>
               </div>
             </div>

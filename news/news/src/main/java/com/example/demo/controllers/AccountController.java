@@ -79,4 +79,13 @@ public class AccountController {
 			return new ResponseEntity<AccountDTO>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	@GetMapping(value = "findByEmail/{email}", produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+	public ResponseEntity<AccountDTO> findByEmail(@PathVariable("email") String email){
+		try {
+			return new ResponseEntity<AccountDTO>(accountService.findByEmail(email), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<AccountDTO>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

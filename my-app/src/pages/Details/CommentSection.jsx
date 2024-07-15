@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { extractImageUrl } from '../../helper/RSSImage';
+import { format, formatDistanceToNow, formatRelative } from "date-fns";
+import { vi } from "date-fns/locale";
 
 const CORS_PROXY = "https://thingproxy.freeboard.io/fetch/";
 
@@ -13,42 +15,37 @@ const CommentSection = ({ linkNews }) => {
     const [error, setError] = useState(null);
     const [pageCount, setPageCount] = useState(0);
     const [itemFindByLink, setItemFindByLink] = useState(null);
+    const cheerio = require('cheerio');
+
+    const formatDateForBackend = (date) => {
+        return format(date, 'yyyy/MM/dd HH:mm:ss');
+    };
+   
 
     useEffect(() => {
         const fetchDataFromRssFeed = async () => {
             try {
-                const response = await fetch(`${CORS_PROXY}https://bongda24h.vn/RSS/1.rss`);
+                const response = await fetch(`${CORS_PROXY}https://bongda24h.vn${linkNews}`);
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
                 const text = await response.text();
-                const parser = new DOMParser();
-                const xml = parser.parseFromString(text, "text/xml");
-                const items = Array.from(xml.querySelectorAll("item"));
-                const parsedItems = items.map((item) => {
-                    const titleCData = item.getElementsByTagName("title")[0]?.textContent;
-                    const descriptionCData = item.querySelector("description")?.textContent;
-                    const url = extractImageUrl(descriptionCData);
-                    // Lấy nội dung từ CDATA
-                    const cdataTitle = titleCData.replace(/&quot;/g, '"');
-                    const cdataContent = descriptionCData.replace(/<[^>]+>/g, "");
+                const $ = cheerio.load(text);
+                const title = $('head > title').text();
+                const imageUrl = $('meta[property="og:image"]').attr('content');
+                const description = $('meta[name="description"]').attr('content');
+                const category = JSON.parse($('script[type="application/ld+json"]').html()).articleSection;
+                const detailsLink = {
+                    title: title,
+                    link: linkNews,
+                    description: description,
+                    pubDate: new Date(),
+                    created: new Date(),
+                    mediaContent: imageUrl,
+                    category: category,
+                };
 
-                    return {
-                        title: cdataTitle,
-                        link: item.getElementsByTagName("link")[0]?.textContent,
-                        description: cdataContent,
-                        pubDate: item.getElementsByTagName("pubDate")[0]?.textContent,
-                        mediaContent: url,
-                        category: item.getElementsByTagName("category")[0]?.textContent,
-                    };
-                }).filter((item) => item.link); // Lọc bỏ những item không có link
-
-                if (parsedItems.length > 0) {
-                    setItemFindByLink(parsedItems[0]); // Lấy phần tử đầu tiên
-                }
-                setRssItems(parsedItems);
-                setPageCount(Math.ceil(parsedItems.length / itemsPerPage));
-                setLoading(false);
+                setItemFindByLink(detailsLink);
             } catch (error) {
                 setError(error);
                 setLoading(false);
@@ -66,13 +63,14 @@ const CommentSection = ({ linkNews }) => {
                 link: linkNews,
                 content: newComment,
                 description: itemFindByLink?.description || "",
-                pubDate: itemFindByLink ? new Date(itemFindByLink.pubDate) : new Date(),
+                pubDate: itemFindByLink ? formatDateForBackend(new Date(itemFindByLink.pubDate)) : formatDateForBackend(new Date()),
+                created: itemFindByLink ? formatDateForBackend(new Date(itemFindByLink.created)) : formatDateForBackend(new Date()),
                 image: itemFindByLink?.mediaContent || "",
                 title: itemFindByLink?.title || "",
                 category: itemFindByLink?.category || "",
                 status: true,
             };
-
+            console.log(comment);
             try {
                 const response = await fetch("http://localhost:8087/api/comment/create", {
                     method: "POST",
@@ -87,10 +85,10 @@ const CommentSection = ({ linkNews }) => {
                     setComments(newCommentList);
                     setNewComment('');
                 } else {
-                    console.error("Error submitting comment:", response.status);
+                    console.error("Lỗi submit comment:", response.status);
                 }
             } catch (error) {
-                console.error("Error submitting comment:", error);
+                console.error("Lỗi submit comment:", error);
             }
         } else {
             alert("Bạn cần có tài khoản để bình luận bài viết");
@@ -145,17 +143,20 @@ const CommentSection = ({ linkNews }) => {
                 Gửi bình luận
             </button>
         </form>
-        <div className="space-y-6">
-            {comments.map((comment, index) => (
-                <div key={index} className="p-4 bg-white shadow-md rounded-lg">
-                    <div className="flex items-center mb-2">
-                        <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
-                        <p className="font-bold text-lg">{comment.accountUsername}</p>
-                    </div>
-                    <p className="text-gray-700">{comment.content}</p>
+        <div className="space-y-6 mb-10">
+    {comments.sort((a, b) => new Date(b.created) - new Date(a.created)).map((comment, index) => (
+        <div key={index} className="p-6 bg-white shadow-md rounded-lg border border-gray-200">
+            <div className="flex items-center mb-4">
+                <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-500 mr-4">
+                    <span className="font-bold">{comment.accountUsername[0].toUpperCase()}</span>
                 </div>
-            ))}
+                <p className="font-bold text-xl text-gray-800">{comment.accountUsername}</p>
+            </div>
+            <p className="text-gray-700 text-lg leading-relaxed">{comment.content}</p>
         </div>
+    ))}
+</div>
+
     </div>
     );
 };

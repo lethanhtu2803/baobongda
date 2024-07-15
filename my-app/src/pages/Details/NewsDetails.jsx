@@ -34,7 +34,6 @@ const NewsDetails = () => {
                 if (footer) footer.remove();
                 if (nav) nav.remove();
 
-                // Extract styles and scripts
                 const styles = Array.from(doc.querySelectorAll('link[rel="stylesheet"], style'))
                     .map(style => style.outerHTML)
                     .join('\n');
@@ -42,10 +41,9 @@ const NewsDetails = () => {
                     .map(script => script.outerHTML)
                     .join('\n');
 
-                // Get the remaining content
                 const bodyContent = doc.body.innerHTML;
                 
-                // Combine styles, content, and scripts with additional styles to prevent overflow
+            
                 const fullContent = `
                     <html>
                     <head>
@@ -60,6 +58,9 @@ const NewsDetails = () => {
                             body > * {
                                 max-width: 100%;
                                
+                            }
+                            .top-bar {
+                                display: none !important;
                             }
                             #aswift_1_host, .adscontent, .breadcrumb2 {
                                 display: none !important;
@@ -94,7 +95,7 @@ const NewsDetails = () => {
                 `;
                 
                 setContent(fullContent);
-                setError(null); // Clear any previous errors
+                setError(null); 
             } catch (error) {
                 console.error('Failed to fetch content', error);
                 setError(error.message);
@@ -128,10 +129,9 @@ const NewsDetails = () => {
             }
         };
 
-        // Listen for resize messages from iframe
+
         window.addEventListener('message', handleResize);
 
-        // Listen for link click messages from iframe
         window.addEventListener('message', handleLinkClick);
 
         return () => {
@@ -143,7 +143,7 @@ const NewsDetails = () => {
         setIframeLoaded(true);
         setTimeout(() => {
             setShowCommentSection(true);
-        }, 20000); 
+        }, 15000); 
     };
     const handleSaveClick = () => {
         setIsSaved(!isSaved);

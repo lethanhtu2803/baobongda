@@ -49,27 +49,27 @@ const Header = () => {
                 <div className="row d-flex align-items-center">
                   <div className="col-xl-3 col-lg-3 col-md-3 d-none d-md-block">
                     <div className="logo">
-                      <a href="index.html">
-                        <img src="assets/img/logo/logo.png" alt="" />
-                      </a>
+                      <Link to="/">
+                      <img style={{height: 90}} src="/assets/img/logo/logo1.jpg" alt="" />
+                      </Link>
                     </div>
                   </div>
                   <div className="col-xl-9 col-lg-9 col-md-9">
                     <div className="header-banner f-right ">
-                      <img src="assets/img/gallery/header_card.png" alt="" />
+                      <img src="/assets/img/banner/banner3.jpg" alt="" />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="header-bottom header-sticky">
-              <div className="container-fluid">
+              <div className="container">
                 <div className="row align-items-center">
                   <div className="col-xl-11 col-lg-11 col-md-11 header-flex">
                     <div className="sticky-logo">
-                      <a href="index.html">
-                        <img src="assets/img/logo/logo.png" alt="" />
-                      </a>
+                      <Link to="/">
+                        <img src="/assets/img/logo/logo.png" alt="" />
+                      </Link>
                     </div>
 
                     <div className="main-menu d-none d-md-block">
@@ -283,7 +283,7 @@ const Header = () => {
                             <NavLink to="/latest" className={({ isActive }) => (isActive ? "active-link" : "")}>Tin chuyển nhượng</NavLink>
                           </li>
                           <li>
-                          <NavLink to="/blog" className={({ isActive }) => (isActive ? "active-link" : "")}>Mới nhất</NavLink>
+                          <NavLink to="/blog" className={({ isActive }) => (isActive ? "active-link" : "")}>Nhận định</NavLink>
                           </li>
                           <li>
                             <NavLink to="/hotnews" className={({ isActive }) => (isActive ? "active-link" : "")}>Tin nóng</NavLink>
@@ -357,18 +357,27 @@ const Header = () => {
                         {isOpen && (
                           <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
                             <div className="py-1">
-                              <Link
-                                to="/register"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                              >
-                                Đăng ký
+                              {user ? (
+                                <></>
+                                ) : (
+                                  <Link
+                                  to="/register"
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                >
+                                  Đăng ký
                               </Link>
-                              <Link
-                                to="/login"
-                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                              >
-                                Đăng nhập
-                              </Link>
+                              )}
+                              {user ? (
+                                <></>
+                              ) : (
+                                <Link
+                                  to="/login"
+                                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                >
+                                  Đăng nhập
+                                </Link>
+                              )}
+
                               {user ? (
                                 <Link
                                 to="/profile"
